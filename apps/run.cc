@@ -13,7 +13,7 @@ using cinder::app::RendererGl;
 namespace myapp {
 
 const int kSamples = 8;
-const int kWidth = 800;
+const int kWidth = 1200;
 const int kHeight = 800;
 
 void SetUp(App::Settings* settings) {
@@ -25,6 +25,6 @@ void SetUp(App::Settings* settings) {
 
 
 // This is a macro that runs the application.
-CINDER_APP(myapp::MyApp,
+CINDER_APP(App::MyApp,
            RendererGl(RendererGl::Options().msaa(myapp::kSamples)),
            myapp::SetUp)
