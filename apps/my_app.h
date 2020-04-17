@@ -6,11 +6,11 @@
 #include <cinder/app/App.h>
 #include <game/engine.h>
 
-namespace App {
+namespace myapp {
 
-class Game : public cinder::app::App {
+class MyApp : public cinder::app::App {
  public:
-  Game();
+  MyApp();
   void setup() override;
   void update() override;
   void draw() override;
@@ -19,6 +19,7 @@ class Game : public cinder::app::App {
  private:
   void DrawBackground() const;
   void DrawPlayer() const;
+  void DrawSquares() const;
 
  private:
   game::Engine engine_;

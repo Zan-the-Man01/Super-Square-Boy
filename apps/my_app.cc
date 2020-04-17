@@ -13,7 +13,7 @@
 #include <chrono>
 
 // change the name of this, the cinder one is already App
-namespace App {
+namespace myapp {
 
 using cinder::Color;
 using cinder::ColorA;
@@ -25,33 +25,34 @@ using game::Location;
 
 using cinder::app::KeyEvent;
 
-Game::Game() : speed_{80}, tile_size_{20}, engine_{16, 16} {}
+MyApp::MyApp() : speed_{80}, tile_size_{40}, engine_{26, 16} {}
 
-void Game::setup() {
+void MyApp::setup() {
   cinder::gl::enableDepthWrite();
   cinder::gl::enableDepthRead();
 }
 
-void Game::update() {
+void MyApp::update() {
   const auto time = system_clock::now();
 
   if (time - last_time_ > std::chrono::milliseconds(speed_)) {
-
+    engine_.Step();
     last_time_ = time;
   }
 }
 
-void Game::draw() {
+void MyApp::draw() {
   cinder::gl::clear();
   DrawBackground();
   DrawPlayer();
+  DrawSquares();
 }
 
-void Game::DrawBackground() const {
+void MyApp::DrawBackground() const {
   cinder::gl::clear(Color(1, 1, 1));
 }
 
-void Game::DrawPlayer() const {
+void MyApp::DrawPlayer() const {
   cinder::gl::color(Color::black());
   const Location loc = engine_.GetPlayerLocation();
   cinder::gl::drawSolidRect(Rectf(tile_size_ * loc.Row(),
@@ -60,6 +61,29 @@ void Game::DrawPlayer() const {
                                   tile_size_ * loc.Col() + tile_size_));
 }
 
-void Game::keyDown(KeyEvent event) { }
+void MyApp::DrawSquares() const {
+  cinder::gl::color(Color::black());
+  const std::vector<Location> locs = engine_.GetFrame().GetSquareLocs();
+
+  for (const auto& loc : locs) {
+    cinder::gl::drawSolidRect(Rectf(tile_size_ * loc.Row(),
+                                    tile_size_ * loc.Col(),
+                                    tile_size_ * loc.Row() + tile_size_,
+                                    tile_size_ * loc.Col() + tile_size_));
+  }
+}
+
+void MyApp::keyDown(KeyEvent event) {
+  switch (event.getCode()) {
+    case KeyEvent::KEY_UP:
+    case KeyEvent::KEY_SPACE: {
+      //engine_.SetDirection(Direction::kLeft);
+      //engine_.AttemptJump(); // implement this function ******************
+      // make falling work ***********************************************
+      // implement step function *****************************************
+      break;
+    }
+  }
+}
 
 }  // namespace myapp
