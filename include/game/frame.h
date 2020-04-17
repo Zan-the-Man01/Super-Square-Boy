@@ -18,11 +18,13 @@ class Frame {
   Frame(const std::string& map_path, size_t rows, size_t height);
   std::vector<Location> GetSquareLocs();
   std::vector<Location> GetSpikeLocs();
+  std::vector<Location> GetSquaresInPlayerCol();
   void FrameStep();
 
  private:
   void FillLine(std::string& line);
   std::vector<Location> GetCharLocs(char ch);
+  std::vector<Location> GetCharsInPlayerCol(char ch);
 
  private:
   const size_t kRows_;

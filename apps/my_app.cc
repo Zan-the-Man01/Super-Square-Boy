@@ -54,7 +54,7 @@ void MyApp::DrawBackground() const {
 
 void MyApp::DrawPlayer() const {
   cinder::gl::color(Color::black());
-  const Location loc = engine_.GetPlayerLocation();
+  const Location loc = engine_.GetPlayerSquare().GetLocation();
   cinder::gl::drawSolidRect(Rectf(tile_size_ * loc.Row(),
                                   tile_size_ * loc.Col(),
                                   tile_size_ * loc.Row() + tile_size_,

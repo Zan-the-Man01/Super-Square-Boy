@@ -11,27 +11,42 @@ namespace game {
 Engine::Engine(size_t width, size_t height) :
     width_{width},
     height_{height},
-    player_loc_{4, 4},
+    playerSquare{4, 4},
     frame_{"map.txt", width, height} {
   Reset();
 }
 
 void Engine::Step() {
-  //Location d_loc = Location(player_loc_.Row() + 1, player_loc_.Col());
+  if (!playerSquare.IsRising() && !PlayerIsOnGround(playerSquare.GetLocation())) {
+    playerSquare.Fall();
+  }
 
-  //player_loc_ = d_loc;
+
   frame_.FrameStep();
 }
 
 void Engine::Reset() {
-  player_loc_ = kStartLocation;
+  //player_loc_ = kStartLocation;
 }
 
-Location Engine::GetPlayerLocation() const {
-  return player_loc_;
+PlayerSquare Engine::GetPlayerSquare() const {
+  return playerSquare;
 }
 
 Frame Engine::GetFrame() const {
   return frame_;
 }
+
+bool Engine::PlayerIsOnGround(Location player_loc) {
+  Location valid_loc = Location(player_loc.Row(), player_loc.Col() + 1);
+  std::vector<Location> square_locs = frame_.GetSquaresInPlayerCol();
+  for (Location loc : square_locs) {
+    if (loc == valid_loc) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 }
