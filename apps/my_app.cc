@@ -77,13 +77,22 @@ void MyApp::keyDown(KeyEvent event) {
   switch (event.getCode()) {
     case KeyEvent::KEY_UP:
     case KeyEvent::KEY_SPACE: {
-      //engine_.SetDirection(Direction::kLeft);
-      //engine_.AttemptJump(); // implement this function ******************
-      // make falling work ***********************************************
-      // implement step function *****************************************
+      //engine_.AttemptJump(); // implement this function ****************
       break;
     }
   }
 }
 
 }  // namespace myapp
+
+// TODO: horizontal collision (will turn into dying later)
+// TODO: jumping
+
+// TODO: death and game overs (will change to reset like in real game later)
+// TODO: spikes
+// TODO: way to actually finish level (end when it is reached)
+// TODO: pause feature
+// TODO: basic menu
+// TODO: music
+
+// TODO: animations with Coreograph (???)
