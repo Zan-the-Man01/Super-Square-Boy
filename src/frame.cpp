@@ -32,8 +32,8 @@ std::vector<Location> Frame::GetSpikeLocs() {
   return GetCharLocs('X');
 }
 
-std::vector<Location> Frame::GetSquaresInPlayerCol() {
-  return GetCharsInPlayerCol('O');
+std::vector<Location> Frame::GetSquaresNearPlayerCol() {
+  return GetCharsNearPlayerCol('O');
 }
 
 void Frame::FrameStep() {
@@ -65,13 +65,17 @@ std::vector<Location> Frame::GetCharLocs(char ch) {
   return square_locs;
 }
 
-std::vector<Location> Frame::GetCharsInPlayerCol(char ch) {
+std::vector<Location> Frame::GetCharsNearPlayerCol(char ch) {
   const size_t kPlayerOffset = 4;
 
   std::vector<Location> square_locs;
   for (size_t col = 0; col < kCols_; col++) {
     if (grid_[row_frame_start_ + kPlayerOffset][col] == ch) {
       square_locs.emplace_back(kPlayerOffset, kCols_ - col);
+    }
+
+    if (grid_[row_frame_start_ + kPlayerOffset + 1][col] == ch) {
+      square_locs.emplace_back(kPlayerOffset + 1, kCols_ - col);
     }
   }
 

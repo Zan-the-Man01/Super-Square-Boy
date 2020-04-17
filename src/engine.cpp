@@ -17,12 +17,15 @@ Engine::Engine(size_t width, size_t height) :
 }
 
 void Engine::Step() {
-  if (!playerSquare.IsRising() && !PlayerIsOnGround(playerSquare.GetLocation())) {
+  std::vector<Location> square_locs = frame_.GetSquaresNearPlayerCol();
+
+  if (!playerSquare.IsRising() && !PlayerIsOnGround(square_locs)) {
     playerSquare.Fall();
   }
 
-
-  frame_.FrameStep();
+  if (PlayerCanMoveForward(square_locs)) {
+    frame_.FrameStep();
+  }
 }
 
 void Engine::Reset() {
@@ -37,9 +40,18 @@ Frame Engine::GetFrame() const {
   return frame_;
 }
 
-bool Engine::PlayerIsOnGround(Location player_loc) {
-  Location valid_loc = Location(player_loc.Row(), player_loc.Col() + 1);
-  std::vector<Location> square_locs = frame_.GetSquaresInPlayerCol();
+bool Engine::PlayerIsOnGround(const std::vector<Location>& square_locs) {
+  return IsSquareToDirection(square_locs, kBelow);
+}
+
+bool Engine::PlayerCanMoveForward(const std::vector<Location>& square_locs) {
+  return !IsSquareToDirection(square_locs, kRight);
+}
+
+bool Engine::IsSquareToDirection(const std::vector<Location>& square_locs, Location direction) {
+  Location player_loc = playerSquare.GetLocation();
+  Location valid_loc = player_loc + direction;
+
   for (Location loc : square_locs) {
     if (loc == valid_loc) {
       return true;
@@ -48,5 +60,4 @@ bool Engine::PlayerIsOnGround(Location player_loc) {
 
   return false;
 }
-
 }
