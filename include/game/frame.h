@@ -29,7 +29,6 @@ class Frame {
  private:
   const size_t kRows_;
   const size_t kCols_;
-
   std::vector<std::string> grid_;
   size_t row_frame_start_;
 };

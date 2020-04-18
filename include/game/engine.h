@@ -23,6 +23,7 @@ class Engine {
   bool PlayerIsOnGround(const std::vector<Location>& square_locs);
   bool PlayerCanMoveForward(const std::vector<Location>& square_locs);
   void AttemptJump();
+  bool IsDead();
 
  private:
   bool IsSquareToDirection(const std::vector<Location>& square_locs, Location direction);
@@ -36,6 +37,7 @@ class Engine {
   Frame frame_;  // the frame that the game will be played in
   PlayerSquare playerSquare;
   bool attempt_jump_ = false;
+  bool dead_ = false;
 };
 
 }

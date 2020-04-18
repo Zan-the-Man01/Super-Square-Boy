@@ -33,6 +33,10 @@ void MyApp::setup() {
 }
 
 void MyApp::update() {
+  if (engine_.IsDead()) {
+    return;
+  }
+
   const auto time = system_clock::now();
 
   if (time - last_time_ > std::chrono::milliseconds(speed_)) {
@@ -42,6 +46,16 @@ void MyApp::update() {
 }
 
 void MyApp::draw() {
+  if (engine_.IsDead()) {
+    if (!death_screen_is_printed_) {
+      cinder::gl::clear();
+      DrawBackground();
+      DrawSquares();
+    }
+
+    return;
+  }
+
   cinder::gl::clear();
   DrawBackground();
   DrawPlayer();
@@ -85,9 +99,7 @@ void MyApp::keyDown(KeyEvent event) {
 
 }  // namespace myapp
 
-// TODO: jumping
-
-// TODO: death and game overs (will change to reset like in real game later)
+// TODO: reset when you die
 // TODO: spikes
 // TODO: way to actually finish level (end when it is reached)
 // TODO: pause feature

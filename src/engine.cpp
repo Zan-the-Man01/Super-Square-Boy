@@ -36,11 +36,13 @@ void Engine::Step() {
 
   if (PlayerCanMoveForward(square_locs)) {
     frame_.FrameStep();
+  } else {
+    dead_ = true;
   }
 }
 
 void Engine::Reset() {
-  //player_loc_ = kStartLocation;
+  dead_ = false;
 }
 
 PlayerSquare Engine::GetPlayerSquare() const {
@@ -74,5 +76,9 @@ bool Engine::IsSquareToDirection(const std::vector<Location>& square_locs, Locat
 
 void Engine::AttemptJump() {
   attempt_jump_ = true;
+}
+
+bool Engine::IsDead() {
+  return dead_;
 }
 }
