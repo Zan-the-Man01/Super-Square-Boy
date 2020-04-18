@@ -36,4 +36,8 @@ void PlayerSquare::Rise() {
 size_t PlayerSquare::TurnsRising() {
   return turns_rising_;
 }
+
+void PlayerSquare::Reset() {
+  loc_ = kPlayerStartLoc;
+}
 }

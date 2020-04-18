@@ -20,6 +20,7 @@ class Frame {
   std::vector<Location> GetSpikeLocs();
   std::vector<Location> GetSquaresNearPlayerCol();
   void FrameStep();
+  void Reset();
 
  private:
   void FillLine(std::string& line);

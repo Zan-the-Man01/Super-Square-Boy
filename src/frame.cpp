@@ -40,6 +40,10 @@ void Frame::FrameStep() {
   row_frame_start_++;
 }
 
+void Frame::Reset() {
+  row_frame_start_ = 0;
+}
+
 void Frame::FillLine(std::string& line) {
   for (size_t i = 0; i < line.size(); i++) {
     if (line[i] != 'O' && line[i] != 'X') {

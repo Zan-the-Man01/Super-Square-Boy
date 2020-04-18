@@ -26,6 +26,7 @@ class MyApp : public cinder::app::App {
   const size_t tile_size_;
   const size_t speed_;
   std::chrono::time_point<std::chrono::system_clock> last_time_;
+  std::chrono::time_point<std::chrono::system_clock> time_of_death_;
   bool death_screen_is_printed_ = false;
 };
 

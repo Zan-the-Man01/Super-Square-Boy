@@ -47,10 +47,16 @@ void MyApp::update() {
 
 void MyApp::draw() {
   if (engine_.IsDead()) {
+    const auto time = system_clock::now();
     if (!death_screen_is_printed_) {
       cinder::gl::clear();
       DrawBackground();
       DrawSquares();
+      death_screen_is_printed_ = true;
+      time_of_death_ = time;
+    } else if (time - time_of_death_ > std::chrono::milliseconds(300)){
+      engine_.Reset();
+      death_screen_is_printed_ = false;
     }
 
     return;

@@ -21,6 +21,7 @@ void Engine::Step() {
   bool on_ground = PlayerIsOnGround(square_locs);
 
   if (!on_ground) {
+    attempt_jump_ = false;
     if (playerSquare.TurnsRising() == 0) {
       playerSquare.Fall();
     } else {
@@ -42,6 +43,9 @@ void Engine::Step() {
 }
 
 void Engine::Reset() {
+  frame_.Reset();
+  playerSquare.Reset();
+  attempt_jump_ = false;
   dead_ = false;
 }
 

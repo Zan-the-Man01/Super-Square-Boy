@@ -20,8 +20,10 @@ class PlayerSquare {
   void Fall();
   void Rise();
   size_t TurnsRising();
+  void Reset();
 
  private:
+  const Location kPlayerStartLoc = Location(4, 4);
   Location loc_;
   size_t turns_rising_ = 0;
 };
