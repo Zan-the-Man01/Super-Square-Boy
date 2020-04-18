@@ -42,11 +42,12 @@ void Frame::FrameStep() {
 
 void Frame::Reset() {
   row_frame_start_ = 0;
+  end_reached_ = false;
 }
 
 void Frame::FillLine(std::string& line) {
   for (size_t i = 0; i < line.size(); i++) {
-    if (line[i] != 'O' && line[i] != 'X') {
+    if (line[i] != 'O' && line[i] != 'X' && line[i] != 'E') {
       line[i] = ' ';
     }
   }
@@ -58,7 +59,7 @@ void Frame::FillLine(std::string& line) {
 
 std::vector<Location> Frame::GetCharLocs(char ch) {
   std::vector<Location> square_locs;
-  for (size_t row = row_frame_start_; row < kRows_ + row_frame_start_; row++) {
+  for (size_t row = row_frame_start_; row < std::min(grid_.size(), kRows_ + row_frame_start_); row++) {
     for (size_t col = 0; col < kCols_; col++) {
       if (grid_[row][col] == ch) {
         square_locs.emplace_back(row - row_frame_start_, kCols_ - col);
@@ -78,12 +79,20 @@ std::vector<Location> Frame::GetCharsNearPlayerCol(char ch) {
       square_locs.emplace_back(kPlayerOffset, kCols_ - col);
     }
 
+    if (grid_[row_frame_start_ + kPlayerOffset][col] == 'E') {
+      end_reached_ = true;  // keep working on this******************
+    }
+
     if (grid_[row_frame_start_ + kPlayerOffset + 1][col] == ch) {
       square_locs.emplace_back(kPlayerOffset + 1, kCols_ - col);
     }
   }
 
   return square_locs;
+}
+
+bool Frame::EndReached() const {
+  return end_reached_;
 }
 
 }

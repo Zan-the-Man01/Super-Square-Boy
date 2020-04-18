@@ -85,4 +85,8 @@ void Engine::AttemptJump() {
 bool Engine::IsDead() const {
   return dead_;
 }
+
+bool Engine::EndReached() const {
+  return frame_.EndReached();
+}
 }

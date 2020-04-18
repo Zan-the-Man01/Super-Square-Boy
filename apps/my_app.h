@@ -20,6 +20,9 @@ class MyApp : public cinder::app::App {
   void DrawBackground() const;
   void DrawPlayer() const;
   void DrawSquares() const;
+  void DrawEndScreen() const;
+  cinder::Color PercentFade(cinder::Color col) const;
+  bool FadeEnded() const;
 
  private:
   game::Engine engine_;
@@ -27,7 +30,9 @@ class MyApp : public cinder::app::App {
   const size_t speed_;
   std::chrono::time_point<std::chrono::system_clock> last_time_;
   std::chrono::time_point<std::chrono::system_clock> time_of_death_;
+  std::chrono::time_point<std::chrono::system_clock> time_of_end_reached_;
   bool just_died_ = true;
+  bool end_reached_ = false;
 };
 
 }  // namespace myapp

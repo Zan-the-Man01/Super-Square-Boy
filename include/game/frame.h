@@ -21,6 +21,7 @@ class Frame {
   std::vector<Location> GetSquaresNearPlayerCol();
   void FrameStep();
   void Reset();
+  bool EndReached() const;
 
  private:
   void FillLine(std::string& line);
@@ -32,6 +33,7 @@ class Frame {
   const size_t kCols_;
   std::vector<std::string> grid_;
   size_t row_frame_start_;
+  bool end_reached_ = false;
 };
 }
 

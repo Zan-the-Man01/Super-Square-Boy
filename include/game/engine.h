@@ -24,6 +24,7 @@ class Engine {
   bool PlayerCanMoveForward(const std::vector<Location>& square_locs);
   void AttemptJump();
   bool IsDead() const;
+  bool EndReached() const;
 
  private:
   bool IsSquareToDirection(const std::vector<Location>& square_locs, Location direction);
