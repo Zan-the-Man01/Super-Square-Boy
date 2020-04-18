@@ -48,18 +48,13 @@ void MyApp::update() {
 void MyApp::draw() {
   if (engine_.IsDead()) {
     const auto time = system_clock::now();
-    if (!death_screen_is_printed_) {
-      cinder::gl::clear();
-      DrawBackground();
-      DrawSquares();
-      death_screen_is_printed_ = true;
+    if (just_died_) {
+      just_died_ = false;
       time_of_death_ = time;
-    } else if (time - time_of_death_ > std::chrono::milliseconds(300)){
+    } else if (time - time_of_death_ > std::chrono::milliseconds(1000)){
       engine_.Reset();
-      death_screen_is_printed_ = false;
+      just_died_ = true;
     }
-
-    return;
   }
 
   cinder::gl::clear();
@@ -73,7 +68,12 @@ void MyApp::DrawBackground() const {
 }
 
 void MyApp::DrawPlayer() const {
-  cinder::gl::color(Color::black());
+  if (engine_.IsDead()) {
+    cinder::gl::color(Color::white());
+  } else {
+    cinder::gl::color(Color::black());
+  }
+
   const Location loc = engine_.GetPlayerSquare().GetLocation();
   cinder::gl::drawSolidRect(Rectf(tile_size_ * loc.Row(),
                                   tile_size_ * loc.Col(),

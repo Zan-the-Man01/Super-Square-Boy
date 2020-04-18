@@ -82,7 +82,7 @@ void Engine::AttemptJump() {
   attempt_jump_ = true;
 }
 
-bool Engine::IsDead() {
+bool Engine::IsDead() const {
   return dead_;
 }
 }
