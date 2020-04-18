@@ -12,3 +12,8 @@
     - Create PlayerSquare class to store gameplay-related information about the player
     - Expand the Engine and MyApp classes to be capable of basic gameplay
     - Implement "gravity" and vertical collision
+    
+- **4/17/20**
+    - Implement jumping
+    - Implement horizontal collision / death
+    - Implement fast restarting of level on death
