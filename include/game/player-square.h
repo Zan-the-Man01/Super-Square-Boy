@@ -15,14 +15,15 @@ class PlayerSquare {
   PlayerSquare(size_t row, size_t col);
   PlayerSquare(Location loc);
   Location GetLocation();
-  bool IsRising();
   void Jump();
-  void Land();
+  void StopRising();
   void Fall();
+  void Rise();
+  size_t TurnsRising();
 
  private:
   Location loc_;
-  bool rising_;
+  size_t turns_rising_ = 0;
 };
 
 }

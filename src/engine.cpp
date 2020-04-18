@@ -18,9 +18,20 @@ Engine::Engine(size_t width, size_t height) :
 
 void Engine::Step() {
   std::vector<Location> square_locs = frame_.GetSquaresNearPlayerCol();
+  bool on_ground = PlayerIsOnGround(square_locs);
 
-  if (!playerSquare.IsRising() && !PlayerIsOnGround(square_locs)) {
-    playerSquare.Fall();
+  if (!on_ground) {
+    if (playerSquare.TurnsRising() == 0) {
+      playerSquare.Fall();
+    } else {
+      playerSquare.Rise();
+
+      if (playerSquare.TurnsRising() >= 3)
+      playerSquare.StopRising();
+    }
+  } else if (attempt_jump_) {
+    playerSquare.Rise();
+    attempt_jump_ = false;
   }
 
   if (PlayerCanMoveForward(square_locs)) {
@@ -59,5 +70,9 @@ bool Engine::IsSquareToDirection(const std::vector<Location>& square_locs, Locat
   }
 
   return false;
+}
+
+void Engine::AttemptJump() {
+  attempt_jump_ = true;
 }
 }

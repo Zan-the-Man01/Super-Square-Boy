@@ -25,7 +25,7 @@ using game::Location;
 
 using cinder::app::KeyEvent;
 
-MyApp::MyApp() : speed_{80}, tile_size_{40}, engine_{26, 16} {}
+MyApp::MyApp() : speed_{50}, tile_size_{40}, engine_{26, 16} {}
 
 void MyApp::setup() {
   cinder::gl::enableDepthWrite();
@@ -77,7 +77,7 @@ void MyApp::keyDown(KeyEvent event) {
   switch (event.getCode()) {
     case KeyEvent::KEY_UP:
     case KeyEvent::KEY_SPACE: {
-      //engine_.AttemptJump(); // implement this function ****************
+      engine_.AttemptJump();
       break;
     }
   }
@@ -85,7 +85,6 @@ void MyApp::keyDown(KeyEvent event) {
 
 }  // namespace myapp
 
-// TODO: horizontal collision (will turn into dying later)
 // TODO: jumping
 
 // TODO: death and game overs (will change to reset like in real game later)

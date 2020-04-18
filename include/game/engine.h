@@ -22,6 +22,7 @@ class Engine {
   Frame GetFrame() const;
   bool PlayerIsOnGround(const std::vector<Location>& square_locs);
   bool PlayerCanMoveForward(const std::vector<Location>& square_locs);
+  void AttemptJump();
 
  private:
   bool IsSquareToDirection(const std::vector<Location>& square_locs, Location direction);
@@ -34,6 +35,7 @@ class Engine {
   const size_t height_;  // the height by number of tiles
   Frame frame_;  // the frame that the game will be played in
   PlayerSquare playerSquare;
+  bool attempt_jump_ = false;
 };
 
 }
