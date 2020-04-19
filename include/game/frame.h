@@ -12,10 +12,15 @@
 #include <vector>
 
 namespace game {
+const size_t kRows = 26;
+const size_t kCols = 16;
 
 class Frame {
+
  public:
-  Frame(const std::string& map_path, size_t rows, size_t height);
+  Frame();
+  explicit Frame(const std::string& map_path);
+  void SetFrame(const std::string& map_path);
   std::vector<Location> GetSquareLocs();
   std::vector<Location> GetSpikeLocs();
   std::vector<Location> GetSquaresNearPlayerCol();
@@ -30,10 +35,8 @@ class Frame {
   std::vector<Location> GetCharsNearPlayerCol(char ch);
 
  private:
-  const size_t kRows_;
-  const size_t kCols_;
   std::vector<std::string> grid_;
-  size_t row_frame_start_;
+  size_t row_frame_start_ = 0;
   bool end_reached_ = false;
 };
 }

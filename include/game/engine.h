@@ -15,7 +15,9 @@ namespace game {
 
 class Engine {
  public:
-  Engine(size_t width, size_t height);
+  Engine();
+  //explicit Engine(size_t map_number);
+  void StartLevel(size_t map_number);
   void Reset();
   void Step();
   PlayerSquare GetPlayerSquare() const;
@@ -30,11 +32,10 @@ class Engine {
   bool IsSquareToDirection(const std::vector<Location>& square_locs, Location direction);
 
  private:
+  const std::vector<std::string> maps_ = {"level1.txt", "level2.txt"};
   const Location kBelow = Location(0, 1);
   const Location kRight = Location(1, 0);
   const Location kStartLocation = Location(5, 5);
-  const size_t width_;   // the width by number of tiles
-  const size_t height_;  // the height by number of tiles
   Frame frame_;  // the frame that the game will be played in
   PlayerSquare playerSquare;
   bool attempt_jump_ = false;

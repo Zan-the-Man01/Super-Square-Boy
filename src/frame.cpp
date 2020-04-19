@@ -8,13 +8,24 @@
 #include <string>
 
 namespace game {
-Frame::Frame(const std::string& map_path, size_t width, size_t height) :
-    kRows_{width},
-    kCols_{height},
-    row_frame_start_(0)
-{
+Frame::Frame() {
+}
+
+Frame::Frame(const std::string& map_path){
   std::ifstream map(cinder::app::getAssetPath(map_path));
-  //for (size_t i = 0; i < width; i++) {
+  while (!map.eof()) {
+    std::string temp;
+    std::getline(map, temp);
+    FillLine(temp);
+
+    grid_.push_back(temp);
+  }
+}
+
+
+void Frame::SetFrame(const std::string& map_path) {
+  grid_.clear();
+  std::ifstream map(cinder::app::getAssetPath(map_path));
   while (!map.eof()) {
     std::string temp;
     std::getline(map, temp);
@@ -56,17 +67,17 @@ void Frame::FillLine(std::string& line) {
     }
   }
 
-  for (size_t i = line.size(); i < kRows_; i++) {
+  for (size_t i = line.size(); i < game::kRows; i++) {
     line.push_back(' ');
   }
 }
 
 std::vector<Location> Frame::GetCharLocs(char ch) {
   std::vector<Location> square_locs;
-  for (size_t row = row_frame_start_; row < std::min(grid_.size(), kRows_ + row_frame_start_); row++) {
-    for (size_t col = 0; col < kCols_; col++) {
+  for (size_t row = row_frame_start_; row < std::min(grid_.size(), kRows + row_frame_start_); row++) {
+    for (size_t col = 0; col < kCols; col++) {
       if (grid_[row][col] == ch) {
-        square_locs.emplace_back(row - row_frame_start_, kCols_ - col);
+        square_locs.emplace_back(row - row_frame_start_, kCols - col);
       }
     }
   }
@@ -78,9 +89,9 @@ std::vector<Location> Frame::GetCharsNearPlayerCol(char ch) {
   const size_t kPlayerOffset = 4;
 
   std::vector<Location> square_locs;
-  for (size_t col = 0; col < kCols_; col++) {
+  for (size_t col = 0; col < kCols; col++) {
     if (grid_[row_frame_start_ + kPlayerOffset][col] == ch) {
-      square_locs.emplace_back(kPlayerOffset, kCols_ - col);
+      square_locs.emplace_back(kPlayerOffset, kCols - col);
     }
 
     if (grid_[row_frame_start_ + kPlayerOffset][col] == 'E') {
@@ -88,7 +99,7 @@ std::vector<Location> Frame::GetCharsNearPlayerCol(char ch) {
     }
 
     if (grid_[row_frame_start_ + kPlayerOffset + 1][col] == ch) {
-      square_locs.emplace_back(kPlayerOffset + 1, kCols_ - col);
+      square_locs.emplace_back(kPlayerOffset + 1, kCols - col);
     }
   }
 

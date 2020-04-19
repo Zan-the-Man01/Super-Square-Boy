@@ -8,11 +8,16 @@
 
 namespace game {
 
-Engine::Engine(size_t width, size_t height) :
-    width_{width},
-    height_{height},
+Engine::Engine() = default;
+
+/*Engine::Engine(size_t map_number) :
     playerSquare{4, 4},
-    frame_{"map.txt", width, height} {
+    frame_{maps_[map_number - 1]} {
+  Reset();
+}*/
+
+void Engine::StartLevel(size_t map_number) {
+  frame_.SetFrame(maps_[map_number - 1]);
   Reset();
 }
 

@@ -34,7 +34,7 @@ const char kDifferentFont[] = "Papyrus";
 const std::vector<Color> player_colors = {Color(1, 0.501, 0)};
 const std::vector<Color> backgr_colors = {Color(0, 0.933, 0.921)};
 
-MyApp::MyApp() : speed_{50}, tile_size_{40}, engine_{26, 16} {}
+MyApp::MyApp() : speed_{50}, tile_size_{40} {}
 
 void MyApp::setup() {
   cinder::gl::enableDepthWrite();
@@ -211,6 +211,7 @@ void MyApp::keyDown(KeyEvent event) {
     case KeyEvent::KEY_1: {
       if (in_main_menu_) {
         in_main_menu_ = false;
+        engine_.StartLevel(1);
       }
       if (paused_) {
         paused_ = false;
@@ -220,6 +221,7 @@ void MyApp::keyDown(KeyEvent event) {
     case KeyEvent::KEY_2: {
       if (in_main_menu_) {
         in_main_menu_ = false;
+        engine_.StartLevel(2);
       }
       if (paused_) {
         in_main_menu_ = true;
