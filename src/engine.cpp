@@ -4,17 +4,10 @@
 
 #include <game/engine.h>
 #include <game/location.h>
-#include <cinder/app/AppBase.h>
 
 namespace game {
 
 Engine::Engine() = default;
-
-/*Engine::Engine(size_t map_number) :
-    playerSquare{4, 4},
-    frame_{maps_[map_number - 1]} {
-  Reset();
-}*/
 
 void Engine::StartLevel(size_t map_number) {
   frame_.SetFrame(maps_[map_number - 1]);
@@ -28,7 +21,6 @@ void Engine::Step() {
   bool spike_below = ItemBelowPlayer(spike_locs);
 
   if (!square_below && !spike_below) {
-    attempt_jump_ = false;
     if (playerSquare.TurnsRising() == 0) {
       playerSquare.Fall();
     } else {
@@ -39,7 +31,6 @@ void Engine::Step() {
     }
   } else if (attempt_jump_) {
     playerSquare.Rise();
-    attempt_jump_ = false;
   }
 
   if (!ItemInFrontOfPlayer(square_locs) &&
@@ -89,6 +80,10 @@ bool Engine::IsSquareToDirection(const std::vector<Location>& square_locs, Locat
 
 void Engine::AttemptJump() {
   attempt_jump_ = true;
+}
+
+void Engine::DontJump() {
+  attempt_jump_ = false;
 }
 
 bool Engine::IsDead() const {

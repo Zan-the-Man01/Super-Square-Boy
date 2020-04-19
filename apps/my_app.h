@@ -5,6 +5,7 @@
 
 #include <cinder/app/App.h>
 #include <game/engine.h>
+#include <cinder/audio/audio.h>
 
 namespace myapp {
 
@@ -15,6 +16,7 @@ class MyApp : public cinder::app::App {
   void update() override;
   void draw() override;
   void keyDown(cinder::app::KeyEvent) override;
+  void keyUp(cinder::app::KeyEvent) override;
 
  private:
   void DrawBackground() const;
@@ -38,6 +40,7 @@ class MyApp : public cinder::app::App {
   bool end_reached_ = false;
   bool paused_ = false;
   bool in_main_menu_ = true;
+  std::vector<cinder::audio::VoiceRef> sound_tracks_;
 };
 
 }  // namespace myapp

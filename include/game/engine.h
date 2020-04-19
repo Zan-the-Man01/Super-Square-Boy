@@ -16,7 +16,6 @@ namespace game {
 class Engine {
  public:
   Engine();
-  //explicit Engine(size_t map_number);
   void StartLevel(size_t map_number);
   void Reset();
   void Step();
@@ -25,6 +24,7 @@ class Engine {
   bool ItemBelowPlayer(const std::vector<Location>& square_locs);
   bool ItemInFrontOfPlayer(const std::vector<Location>& square_locs);
   void AttemptJump();
+  void DontJump();
   bool IsDead() const;
   bool EndReached() const;
 

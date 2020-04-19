@@ -16,7 +16,6 @@ const size_t kRows = 26;
 const size_t kCols = 16;
 
 class Frame {
-
  public:
   Frame();
   explicit Frame(const std::string& map_path);

@@ -7,6 +7,8 @@
 
 #include <game/location.h>
 
+#include "frame.h"
+
 namespace game {
 
 class PlayerSquare {
@@ -23,7 +25,7 @@ class PlayerSquare {
   void Reset();
 
  private:
-  const Location kPlayerStartLoc = Location(4, 4);
+  const Location kPlayerStartLoc = Location(4, kCols - 1);
   Location loc_;
   size_t turns_rising_ = 0;
 };

@@ -39,6 +39,17 @@ MyApp::MyApp() : speed_{50}, tile_size_{40} {}
 void MyApp::setup() {
   cinder::gl::enableDepthWrite();
   cinder::gl::enableDepthRead();
+
+  try {
+    cinder::audio::SourceFileRef sourceFile =
+        cinder::audio::load(cinder::app::loadAsset("music.mp3"));
+    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
+    sourceFile =
+        cinder::audio::load(cinder::app::loadAsset("music2.mp3"));
+    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
+  } catch (const std::exception& ex) {
+    exit(1);
+  }
 }
 
 template <typename C>
@@ -212,6 +223,7 @@ void MyApp::keyDown(KeyEvent event) {
       if (in_main_menu_) {
         in_main_menu_ = false;
         engine_.StartLevel(1);
+        sound_tracks_[0]->start();
       }
       if (paused_) {
         paused_ = false;
@@ -222,6 +234,7 @@ void MyApp::keyDown(KeyEvent event) {
       if (in_main_menu_) {
         in_main_menu_ = false;
         engine_.StartLevel(2);
+        sound_tracks_[1]->start();
       }
       if (paused_) {
         in_main_menu_ = true;
@@ -250,6 +263,16 @@ void MyApp::keyDown(KeyEvent event) {
   }
 }
 
+void MyApp::keyUp(KeyEvent event) {
+  switch (event.getCode()) {
+    case KeyEvent::KEY_UP:
+    case KeyEvent::KEY_SPACE: {
+      engine_.DontJump();
+      break;
+    }
+  }
+}
+
 Color MyApp::PercentFade(Color col) const {
   if (!engine_.EndReached()) {
     return col;
@@ -266,6 +289,10 @@ Color MyApp::PercentFade(Color col) const {
 
 bool MyApp::FadeEnded() const {
   Color col = PercentFade(backgr_colors[0]);
+  if (col.r <= 0 && col.g <= 0 && col.b <= 0) {
+    int x = 0;  // THIS IS GETTING CALLED IMMEDIATELY WHEN THE END IS REACHED WHEN
+                // IT SHOULD WAIT FOR THE COUNTDOWN TO BE OVER
+  }
   return col.r <= 0 && col.g <= 0 && col.b <= 0;
 }
 
