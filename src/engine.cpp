@@ -18,9 +18,11 @@ Engine::Engine(size_t width, size_t height) :
 
 void Engine::Step() {
   std::vector<Location> square_locs = frame_.GetSquaresNearPlayerCol();
-  bool on_ground = PlayerIsOnGround(square_locs);
+  std::vector<Location> spike_locs = frame_.GetSpikesNearPlayerCol();
+  bool square_below = ItemBelowPlayer(square_locs);
+  bool spike_below = ItemBelowPlayer(spike_locs);
 
-  if (!on_ground) {
+  if (!square_below && !spike_below) {
     attempt_jump_ = false;
     if (playerSquare.TurnsRising() == 0) {
       playerSquare.Fall();
@@ -35,7 +37,9 @@ void Engine::Step() {
     attempt_jump_ = false;
   }
 
-  if (PlayerCanMoveForward(square_locs)) {
+  if (!ItemInFrontOfPlayer(square_locs) &&
+      !ItemInFrontOfPlayer(spike_locs) &&
+      !spike_below) {
     frame_.FrameStep();
   } else {
     dead_ = true;
@@ -57,12 +61,12 @@ Frame Engine::GetFrame() const {
   return frame_;
 }
 
-bool Engine::PlayerIsOnGround(const std::vector<Location>& square_locs) {
+bool Engine::ItemBelowPlayer(const std::vector<Location>& square_locs) {
   return IsSquareToDirection(square_locs, kBelow);
 }
 
-bool Engine::PlayerCanMoveForward(const std::vector<Location>& square_locs) {
-  return !IsSquareToDirection(square_locs, kRight);
+bool Engine::ItemInFrontOfPlayer(const std::vector<Location>& square_locs) {
+  return IsSquareToDirection(square_locs, kRight);
 }
 
 bool Engine::IsSquareToDirection(const std::vector<Location>& square_locs, Location direction) {

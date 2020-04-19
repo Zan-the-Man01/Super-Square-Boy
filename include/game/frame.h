@@ -19,6 +19,7 @@ class Frame {
   std::vector<Location> GetSquareLocs();
   std::vector<Location> GetSpikeLocs();
   std::vector<Location> GetSquaresNearPlayerCol();
+  std::vector<Location> GetSpikesNearPlayerCol();
   void FrameStep();
   void Reset();
   bool EndReached() const;

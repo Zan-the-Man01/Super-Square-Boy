@@ -39,6 +39,9 @@ OOOO
 OOOO
 OOOO
 OOOO
+OX
+OX
+OX
 O
 O
 O
@@ -48,10 +51,7 @@ O
 O
 O
 O
-O
-O
-O
-O
+OX
 O
 O
 OO

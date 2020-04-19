@@ -20,8 +20,8 @@ class Engine {
   void Step();
   PlayerSquare GetPlayerSquare() const;
   Frame GetFrame() const;
-  bool PlayerIsOnGround(const std::vector<Location>& square_locs);
-  bool PlayerCanMoveForward(const std::vector<Location>& square_locs);
+  bool ItemBelowPlayer(const std::vector<Location>& square_locs);
+  bool ItemInFrontOfPlayer(const std::vector<Location>& square_locs);
   void AttemptJump();
   bool IsDead() const;
   bool EndReached() const;

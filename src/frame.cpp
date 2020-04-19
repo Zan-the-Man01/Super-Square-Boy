@@ -36,6 +36,10 @@ std::vector<Location> Frame::GetSquaresNearPlayerCol() {
   return GetCharsNearPlayerCol('O');
 }
 
+std::vector<Location> Frame::GetSpikesNearPlayerCol() {
+  return GetCharsNearPlayerCol('X');
+}
+
 void Frame::FrameStep() {
   row_frame_start_++;
 }

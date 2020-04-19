@@ -104,12 +104,11 @@ void MyApp::draw() {
   DrawBackground();
   DrawPlayer();
   DrawSquares();
+  DrawSpikes();
 }
 
 void MyApp::DrawBackground() const {
   cinder::gl::clear(PercentFade(backgr_colors[0]));
-  //float color_val = PercentFade();
-  //cinder::gl::clear(Color(color_val, color_val, color_val));
 }
 
 void MyApp::DrawPlayer() const {
@@ -129,6 +128,18 @@ void MyApp::DrawPlayer() const {
 void MyApp::DrawSquares() const {
   cinder::gl::color(Color::black());
   const std::vector<Location> locs = engine_.GetFrame().GetSquareLocs();
+
+  for (const auto& loc : locs) {
+    cinder::gl::drawSolidRect(Rectf(tile_size_ * loc.Row(),
+                                    tile_size_ * loc.Col(),
+                                    tile_size_ * loc.Row() + tile_size_,
+                                    tile_size_ * loc.Col() + tile_size_));
+  }
+}
+
+void MyApp::DrawSpikes() const {
+  cinder::gl::color(Color(1, 0, 0));
+  const std::vector<Location> locs = engine_.GetFrame().GetSpikeLocs();
 
   for (const auto& loc : locs) {
     cinder::gl::drawSolidRect(Rectf(tile_size_ * loc.Row(),

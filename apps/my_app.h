@@ -20,6 +20,7 @@ class MyApp : public cinder::app::App {
   void DrawBackground() const;
   void DrawPlayer() const;
   void DrawSquares() const;
+  void DrawSpikes() const;
   void DrawEndScreen() const;
   cinder::Color PercentFade(cinder::Color col) const;
   bool FadeEnded() const;
