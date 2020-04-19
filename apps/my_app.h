@@ -22,6 +22,7 @@ class MyApp : public cinder::app::App {
   void DrawSquares() const;
   void DrawSpikes() const;
   void DrawEndScreen() const;
+  void DrawPauseScreen() const;
   cinder::Color PercentFade(cinder::Color col) const;
   bool FadeEnded() const;
 
@@ -34,6 +35,7 @@ class MyApp : public cinder::app::App {
   std::chrono::time_point<std::chrono::system_clock> time_of_end_reached_;
   bool just_died_ = true;
   bool end_reached_ = false;
+  bool paused_ = false;
 };
 
 }  // namespace myapp

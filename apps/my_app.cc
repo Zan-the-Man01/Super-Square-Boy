@@ -62,6 +62,10 @@ void PrintText(const std::string& text, const C& color, const cinder::ivec2& siz
 }
 
 void MyApp::update() {
+  if (paused_) {
+    return;
+  }
+
   const auto time = system_clock::now();
   if (!end_reached_ && engine_.EndReached()) {
     time_of_end_reached_ = time;
@@ -84,6 +88,10 @@ void MyApp::update() {
 }
 
 void MyApp::draw() {
+  if (paused_) {
+    DrawPauseScreen();
+    return;
+  }
   if (FadeEnded()) {
     DrawEndScreen();
     return;
@@ -157,14 +165,40 @@ void MyApp::DrawEndScreen() const {
   const Color color = player_colors[0];
 
 
-  PrintText("You win!", color, size, center, 100);
+  PrintText("YOU WIN!", color, size, center, 100);
+}
+
+void MyApp::DrawPauseScreen() const {
+  cinder::gl::clear(backgr_colors[0]);
+
+  const cinder::vec2 center = getWindowCenter();
+  const cinder::ivec2 size = {1000, 100};
+  const Color color = player_colors[0];
+  const float main_y_offset = 150;
+  const float small_y_offset = 75;
+
+
+  PrintText("PAUSED", color, size, {center.x, center.y - main_y_offset}, 100);
+  PrintText("1: RESUME GAME", color, size, center, 50);
+  PrintText("2: MAIN MENU", color, size,
+      {center.x, center.y + small_y_offset}, 50);
 }
 
 void MyApp::keyDown(KeyEvent event) {
   switch (event.getCode()) {
+    case KeyEvent::KEY_1: {
+      if (paused_) {
+        paused_ = !paused_;
+      }
+      break;
+    }
     case KeyEvent::KEY_UP:
     case KeyEvent::KEY_SPACE: {
       engine_.AttemptJump();
+      break;
+    }
+    case KeyEvent::KEY_ESCAPE: {
+      paused_ = !paused_;
       break;
     }
   }
@@ -191,7 +225,6 @@ bool MyApp::FadeEnded() const {
 
 }  // namespace myapp
 
-// TODO: spikes
 // TODO: pause feature
 // TODO: basic menu
 // TODO: music
