@@ -23,6 +23,7 @@ class MyApp : public cinder::app::App {
   void DrawSpikes() const;
   void DrawEndScreen() const;
   void DrawPauseScreen() const;
+  void DrawMainMenu() const;
   cinder::Color PercentFade(cinder::Color col) const;
   bool FadeEnded() const;
 
@@ -36,6 +37,7 @@ class MyApp : public cinder::app::App {
   bool just_died_ = true;
   bool end_reached_ = false;
   bool paused_ = false;
+  bool in_main_menu_ = true;
 };
 
 }  // namespace myapp

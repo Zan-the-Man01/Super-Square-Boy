@@ -62,7 +62,7 @@ void PrintText(const std::string& text, const C& color, const cinder::ivec2& siz
 }
 
 void MyApp::update() {
-  if (paused_) {
+  if (in_main_menu_ || paused_) {
     return;
   }
 
@@ -88,6 +88,10 @@ void MyApp::update() {
 }
 
 void MyApp::draw() {
+  if (in_main_menu_) {
+    DrawMainMenu();
+    return;
+  }
   if (paused_) {
     DrawPauseScreen();
     return;
@@ -184,11 +188,49 @@ void MyApp::DrawPauseScreen() const {
       {center.x, center.y + small_y_offset}, 50);
 }
 
+void MyApp::DrawMainMenu() const {
+  cinder::gl::clear(backgr_colors[0]);
+
+  const cinder::vec2 center = getWindowCenter();
+  const cinder::ivec2 size = {1000, 100};
+  const Color color = player_colors[0];
+  const float main_y_offset = 150;
+  const float small_y_offset = 75;
+
+
+  PrintText("SUPER SQUARE BOY", color, size, {center.x, center.y - main_y_offset}, 100);
+  PrintText("1: LEVEL ONE", color, size, center, 50);
+  PrintText("2: LEVEL TWO", color, size,
+            {center.x, center.y + small_y_offset}, 50);
+  PrintText("3: EXIT", color, size,
+            {center.x, center.y + (2 * small_y_offset)}, 50);
+}
+
 void MyApp::keyDown(KeyEvent event) {
   switch (event.getCode()) {
     case KeyEvent::KEY_1: {
+      if (in_main_menu_) {
+        in_main_menu_ = false;
+      }
       if (paused_) {
-        paused_ = !paused_;
+        paused_ = false;
+      }
+      break;
+    }
+    case KeyEvent::KEY_2: {
+      if (in_main_menu_) {
+        in_main_menu_ = false;
+      }
+      if (paused_) {
+        in_main_menu_ = true;
+        paused_ = false;
+        engine_.Reset();
+      }
+      break;
+    }
+    case KeyEvent::KEY_3: {
+      if (in_main_menu_) {
+        exit(0);
       }
       break;
     }
@@ -198,7 +240,9 @@ void MyApp::keyDown(KeyEvent event) {
       break;
     }
     case KeyEvent::KEY_ESCAPE: {
-      paused_ = !paused_;
+      if (!in_main_menu_) {
+        paused_ = !paused_;
+      }
       break;
     }
   }
@@ -225,8 +269,6 @@ bool MyApp::FadeEnded() const {
 
 }  // namespace myapp
 
-// TODO: pause feature
-// TODO: basic menu
 // TODO: music
 
 // TODO: animations with Coreograph (???)
