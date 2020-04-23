@@ -17,3 +17,12 @@
     - Implement jumping
     - Implement horizontal collision / death
     - Implement fast restarting of level on death
+    
+- **4/18/20**
+    - Implement colors
+    - Implement level completion
+    - Implement pause feature
+    - Implement main menu
+    - Implement level select
+    - Implement spikes
+    - Start on music implementation
