@@ -10,6 +10,7 @@
 #include <cinder/gl/draw.h>
 #include <cinder/gl/gl.h>
 #include <game/location.h>
+#include <choreograph/Choreograph.h>
 
 #include <chrono>
 
@@ -37,8 +38,8 @@ const std::vector<Color> backgr_colors = {Color(0, 0.933, 0.921)};
 MyApp::MyApp() : speed_{50}, tile_size_{40} {}
 
 void MyApp::setup() {
-  cinder::gl::enableDepthWrite();
-  cinder::gl::enableDepthRead();
+  //cinder::gl::enableDepthWrite();
+  //cinder::gl::enableDepthRead();
 
   try {
     cinder::audio::SourceFileRef sourceFile =
@@ -50,6 +51,41 @@ void MyApp::setup() {
   } catch (const std::exception& ex) {
     exit(1);
   }
+
+
+  // Create a procedural phrase that moves vertically on a sine wave.
+  // Procedural phrases can evaluate any function you like.
+  ch::PhraseRef<cinder::vec2> bounce = ch::makeProcedure<cinder::vec2>( 2.0, [] ( ch::Time t, ch::Time duration ) {
+    return cinder::vec2( 0, sin( ch::easeInOutQuad(t) * 6 * M_PI ) * 400.0f );
+  } );
+
+  // Create a ramp phrase from the left to the right side of the window.
+  float w = (float)cinder::app::getWindowWidth();
+  float x1 = 0;
+  float x2 = w;
+  ch::PhraseRef<cinder::vec2> slide = makeRamp( cinder::vec2( x1, 0 ),
+      cinder::vec2( x2, 0 ), 2.0f, ch::EaseInOutCubic() );
+
+  // Combine the slide and bounce phrases using an AccumulatePhrase.
+  // By default, the accumulation operation sums all the phrase values with an initial value.
+  float center_y = cinder::app::getWindowHeight() / 2.0f;
+  ch::PhraseRef<cinder::vec2> bounce_and_slide = makeAccumulator( cinder::vec2( 0, center_y ), bounce, slide );
+
+  // Provide an explicit combine function.
+  // In this case, we subtract each value from the initial value.
+  ch::PhraseRef<cinder::vec2> bounce_and_slide_negative = makeAccumulator( cinder::vec2( w, center_y ),
+      bounce, slide, [] (const cinder::vec2 &a, const cinder::vec2 &b) {
+    return a - b;
+  } );
+
+  // Apply our Sequences to Outputs.
+  timeline_.apply( &_position_a, bounce_and_slide );
+  timeline_.apply( &_position_b, bounce_and_slide_negative );
+  timeline_.apply( &_reference_bounce, bounce );
+  timeline_.apply( &_reference_slide, slide );
+
+  // Place Outputs at initial sequence values.
+  timeline_.jumpTo( 0 );
 }
 
 template <typename C>
@@ -61,7 +97,6 @@ void PrintText(const std::string& text, const C& color, const cinder::ivec2& siz
       .alignment(TextBox::CENTER)
       .font(cinder::Font(kNormalFont, font_size))
       .size(size)
-      .color(color)
       .backgroundColor(ColorA(0, 0, 0, 0))
       .text(text);
 
@@ -73,6 +108,9 @@ void PrintText(const std::string& text, const C& color, const cinder::ivec2& siz
 }
 
 void MyApp::update() {
+
+  timeline_.step( ch::Time(t_));
+  t_ += 0.0001;
   if (in_main_menu_ || paused_) {
     return;
   }
@@ -100,6 +138,17 @@ void MyApp::update() {
 
 void MyApp::draw() {
   if (in_main_menu_) {
+    cinder::gl::clear(PercentFade(backgr_colors[0]));
+    cinder::gl::ScopedColor color( player_colors[0] );
+    //cinder::gl::drawSolidCircle( _position_a, 30.0f );
+    //cinder::gl::drawSolidEllipse(_position_a, 30.0f, 20.0f);
+
+    //const Location loc = engine_.GetPlayerSquare().GetLocation();
+    cinder::gl::drawSolidRect(Rectf(_position_a,
+                                    _position_b));
+
+    //cinder::gl::color( Color( cinder::CM_HSV, 0.96f, 1.0f, 1.0f ) );
+    //cinder::gl::drawSolidCircle( _position_b, 30.0f );
     DrawMainMenu();
     return;
   }
@@ -200,7 +249,7 @@ void MyApp::DrawPauseScreen() const {
 }
 
 void MyApp::DrawMainMenu() const {
-  cinder::gl::clear(backgr_colors[0]);
+  //cinder::gl::clear(backgr_colors[0]);
 
   const cinder::vec2 center = getWindowCenter();
   const cinder::ivec2 size = {1000, 100};

@@ -3,9 +3,10 @@
 #ifndef FINALPROJECT_APPS_MYAPP_H_
 #define FINALPROJECT_APPS_MYAPP_H_
 
+#include <choreograph/Choreograph.h>
 #include <cinder/app/App.h>
-#include <game/engine.h>
 #include <cinder/audio/audio.h>
+#include <game/engine.h>
 
 namespace myapp {
 
@@ -41,6 +42,13 @@ class MyApp : public cinder::app::App {
   bool paused_ = false;
   bool in_main_menu_ = true;
   std::vector<cinder::audio::VoiceRef> sound_tracks_;
+  ch::Timeline timeline_;
+  ch::Output<ci::vec2> _position_a;
+  ch::Output<ci::vec2> _position_b;
+
+  ch::Output<ci::vec2> _reference_bounce;
+  ch::Output<ci::vec2> _reference_slide;
+  double t_ = 0;
 };
 
 }  // namespace myapp
