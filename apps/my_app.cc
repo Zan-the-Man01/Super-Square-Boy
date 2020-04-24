@@ -138,14 +138,10 @@ void MyApp::update() {
 
 void MyApp::draw() {
   if (in_main_menu_) {
-    cinder::gl::clear(PercentFade(backgr_colors[0]));
-    cinder::gl::ScopedColor color( player_colors[0] );
     //cinder::gl::drawSolidCircle( _position_a, 30.0f );
     //cinder::gl::drawSolidEllipse(_position_a, 30.0f, 20.0f);
 
     //const Location loc = engine_.GetPlayerSquare().GetLocation();
-    cinder::gl::drawSolidRect(Rectf(_position_a,
-                                    _position_b));
 
     //cinder::gl::color( Color( cinder::CM_HSV, 0.96f, 1.0f, 1.0f ) );
     //cinder::gl::drawSolidCircle( _position_b, 30.0f );
@@ -153,11 +149,26 @@ void MyApp::draw() {
     return;
   }
   if (paused_) {
-    DrawPauseScreen();
+    if (!t_set_) {
+      t_ = 0;
+      t_set_ = true;
+    } else {
+      if (!t_other_set_) {
+        t_ = 0;
+        t_other_set_ = true;
+      }
+    }
+    cinder::gl::clear(Color::black());
+    cinder::gl::ScopedColor color(player_colors[0]);
+    cinder::gl::drawSolidRect(Rectf(_position_a, _position_b));
+    DrawPauseScreen();  // this causes the problem if it runs at all
     return;
   }
   if (FadeEnded()) {
-    DrawEndScreen();
+
+    //if (t_other_set_) {
+    //}
+    //DrawEndScreen();
     return;
   }
 
@@ -222,7 +233,7 @@ void MyApp::DrawSpikes() const {
 }
 
 void MyApp::DrawEndScreen() const {
-  cinder::gl::clear(Color::black());
+  //cinder::gl::clear(Color::black());
 
   const cinder::vec2 center = getWindowCenter();
   const cinder::ivec2 size = {1000, 100};
@@ -233,7 +244,7 @@ void MyApp::DrawEndScreen() const {
 }
 
 void MyApp::DrawPauseScreen() const {
-  cinder::gl::clear(backgr_colors[0]);
+  //cinder::gl::clear(backgr_colors[0]);
 
   const cinder::vec2 center = getWindowCenter();
   const cinder::ivec2 size = {1000, 100};
@@ -249,7 +260,7 @@ void MyApp::DrawPauseScreen() const {
 }
 
 void MyApp::DrawMainMenu() const {
-  //cinder::gl::clear(backgr_colors[0]);
+  cinder::gl::clear(backgr_colors[0]);
 
   const cinder::vec2 center = getWindowCenter();
   const cinder::ivec2 size = {1000, 100};

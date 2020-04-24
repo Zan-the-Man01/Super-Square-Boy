@@ -49,6 +49,8 @@ class MyApp : public cinder::app::App {
   ch::Output<ci::vec2> _reference_bounce;
   ch::Output<ci::vec2> _reference_slide;
   double t_ = 0;
+  bool t_set_ = false;
+  bool t_other_set_ = false;
 };
 
 }  // namespace myapp
