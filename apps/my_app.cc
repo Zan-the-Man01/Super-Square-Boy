@@ -34,6 +34,8 @@ const char kBoldFont[] = "Arial Bold";
 const char kDifferentFont[] = "Papyrus";
 const std::vector<Color> player_colors = {Color(1, 0.501, 0)};
 const std::vector<Color> backgr_colors = {Color(0, 0.933, 0.921)};
+const double kPauseScreenPrintTime = 0.0075;
+const double kAnimationEndTime = 0.01092;
 
 MyApp::MyApp() : speed_{50}, tile_size_{40} {}
 
@@ -110,9 +112,9 @@ void PrintText(const std::string& text, const C& color, const cinder::ivec2& siz
 
 void MyApp::update() {
 
-  timeline_.step( ch::Time(t_));
+  timeline_.step( ch::Time(anim_time_));
   if (animation_started_) {
-    t_ += 0.0001;
+    anim_time_ += 0.0001;
   }
 
   if (in_main_menu_ || paused_) {
@@ -155,7 +157,7 @@ void MyApp::draw() {
   if (paused_) {
     if (!animation_started_) {
       animation_started_ = true;
-      t_ = 0;
+      anim_time_ = 0;
       SetUpAnimation();
     }
 
@@ -198,14 +200,14 @@ void MyApp::draw() {
 }
 
 void MyApp::DrawBackground() const {
-  cinder::gl::clear(PercentFade(backgr_colors[0]));
+  cinder::gl::clear(FadedColor(backgr_colors[0]));
 }
 
 void MyApp::DrawPlayer() const {
   if (engine_.IsDead()) {
-    cinder::gl::color(PercentFade(backgr_colors[0]));
+    cinder::gl::color(FadedColor(backgr_colors[0]));
   } else {
-    cinder::gl::color(PercentFade(player_colors[0]));
+    cinder::gl::color(FadedColor(player_colors[0]));
   }
 
   const Location loc = engine_.GetPlayerSquare().GetLocation();
@@ -293,13 +295,13 @@ void MyApp::keyDown(KeyEvent event) {
         sound_tracks_[0]->start();
         paused_ = false;
         animation_started_ = false;
-        t_ = 0;
+        anim_time_ = 0;
         SetUpAnimation();
       }
       if (paused_) {
         paused_ = false;
         animation_started_ = false;
-        t_ = 0;
+        anim_time_ = 0;
         SetUpAnimation();
       }
       break;
@@ -311,7 +313,7 @@ void MyApp::keyDown(KeyEvent event) {
         sound_tracks_[1]->start();
         paused_ = false;
         animation_started_ = false;
-        t_ = 0;
+        anim_time_ = 0;
         SetUpAnimation();
       }
       if (paused_) {
@@ -337,11 +339,11 @@ void MyApp::keyDown(KeyEvent event) {
         if (paused_) {
           paused_ = false;
           animation_started_ = false;
-          t_ = 0;
+          anim_time_ = 0;
           SetUpAnimation();
         } else {
           paused_ = true;
-          t_ = 0;
+          anim_time_ = 0;
           SetUpAnimation();
         }
       }
@@ -360,7 +362,7 @@ void MyApp::keyUp(KeyEvent event) {
   }
 }
 
-Color MyApp::PercentFade(Color col) const {
+Color MyApp::FadedColor(Color col) const {
   if (!engine_.EndReached()) {
     return col;
   }
@@ -375,11 +377,11 @@ Color MyApp::PercentFade(Color col) const {
 }
 
 bool MyApp::TimeToPrintPauseScreen() const {
-  return animation_started_ && t_ >= kPauseScreenPrintTime;
+  return animation_started_ && anim_time_ >= kPauseScreenPrintTime;
 }
 
 bool MyApp::FadeEnded() const {
-  Color col = PercentFade(backgr_colors[0]);
+  Color col = FadedColor(backgr_colors[0]);
   if (col.r <= 0 && col.g <= 0 && col.b <= 0) {
     int x = 0;  // THIS IS GETTING CALLED IMMEDIATELY WHEN THE END IS REACHED WHEN
                 // IT SHOULD WAIT FOR THE COUNTDOWN TO BE OVER
@@ -388,7 +390,7 @@ bool MyApp::FadeEnded() const {
 }
 
 bool MyApp::AnimationEnded() {
-  return animation_started_ && t_ >= kAnimationEndTime;
+  return animation_started_ && anim_time_ >= kAnimationEndTime;
 }
 
 }  // namespace myapp
