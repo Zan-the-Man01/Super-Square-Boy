@@ -92,6 +92,8 @@ class MyApp : public cinder::app::App {
 
   void DrawCreditsScreen() const;
 
+  void SelectLevel(int level_num);
+
   /**
    * Gets the correctly faded color based on how long the fade has lasted.
    * @param col the color to fade.
