@@ -20,6 +20,7 @@ class MyApp : public cinder::app::App {
   void keyUp(cinder::app::KeyEvent) override;
 
  private:
+  void SetUpAnimation();
   void DrawBackground() const;
   void DrawPlayer() const;
   void DrawSquares() const;
@@ -28,9 +29,13 @@ class MyApp : public cinder::app::App {
   void DrawPauseScreen() const;
   void DrawMainMenu() const;
   cinder::Color PercentFade(cinder::Color col) const;
+  bool TimeToPrintPauseScreen() const;
   bool FadeEnded() const;
+  bool AnimationEnded();
 
  private:
+  const double kPauseScreenPrintTime = 0.0075;
+  const double kAnimationEndTime = 0.01092;
   game::Engine engine_;
   const size_t tile_size_;
   const size_t speed_;
@@ -45,12 +50,8 @@ class MyApp : public cinder::app::App {
   ch::Timeline timeline_;
   ch::Output<ci::vec2> _position_a;
   ch::Output<ci::vec2> _position_b;
-
-  ch::Output<ci::vec2> _reference_bounce;
-  ch::Output<ci::vec2> _reference_slide;
   double t_ = 0;
-  bool t_set_ = false;
-  bool t_other_set_ = false;
+  bool animation_started_ = false;
 };
 
 }  // namespace myapp

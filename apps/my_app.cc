@@ -52,7 +52,10 @@ void MyApp::setup() {
     exit(1);
   }
 
+  SetUpAnimation();
+}
 
+void MyApp::SetUpAnimation() {
   // Create a procedural phrase that moves vertically on a sine wave.
   // Procedural phrases can evaluate any function you like.
   ch::PhraseRef<cinder::vec2> bounce = ch::makeProcedure<cinder::vec2>( 2.0, [] ( ch::Time t, ch::Time duration ) {
@@ -64,7 +67,7 @@ void MyApp::setup() {
   float x1 = 0;
   float x2 = w;
   ch::PhraseRef<cinder::vec2> slide = makeRamp( cinder::vec2( x1, 0 ),
-      cinder::vec2( x2, 0 ), 2.0f, ch::EaseInOutCubic() );
+                                                cinder::vec2( x2, 0 ), 2.0f, ch::EaseInOutCubic() );
 
   // Combine the slide and bounce phrases using an AccumulatePhrase.
   // By default, the accumulation operation sums all the phrase values with an initial value.
@@ -74,15 +77,13 @@ void MyApp::setup() {
   // Provide an explicit combine function.
   // In this case, we subtract each value from the initial value.
   ch::PhraseRef<cinder::vec2> bounce_and_slide_negative = makeAccumulator( cinder::vec2( w, center_y ),
-      bounce, slide, [] (const cinder::vec2 &a, const cinder::vec2 &b) {
-    return a - b;
-  } );
+                                                                           bounce, slide, [] (const cinder::vec2 &a, const cinder::vec2 &b) {
+        return a - b;
+      } );
 
   // Apply our Sequences to Outputs.
   timeline_.apply( &_position_a, bounce_and_slide );
   timeline_.apply( &_position_b, bounce_and_slide_negative );
-  timeline_.apply( &_reference_bounce, bounce );
-  timeline_.apply( &_reference_slide, slide );
 
   // Place Outputs at initial sequence values.
   timeline_.jumpTo( 0 );
@@ -110,7 +111,10 @@ void PrintText(const std::string& text, const C& color, const cinder::ivec2& siz
 void MyApp::update() {
 
   timeline_.step( ch::Time(t_));
-  t_ += 0.0001;
+  if (animation_started_) {
+    t_ += 0.0001;
+  }
+
   if (in_main_menu_ || paused_) {
     return;
   }
@@ -149,26 +153,29 @@ void MyApp::draw() {
     return;
   }
   if (paused_) {
-    if (!t_set_) {
+    if (!animation_started_) {
+      animation_started_ = true;
       t_ = 0;
-      t_set_ = true;
-    } else {
-      if (!t_other_set_) {
-        t_ = 0;
-        t_other_set_ = true;
-      }
+      SetUpAnimation();
     }
-    cinder::gl::clear(Color::black());
-    cinder::gl::ScopedColor color(player_colors[0]);
-    cinder::gl::drawSolidRect(Rectf(_position_a, _position_b));
-    DrawPauseScreen();  // this causes the problem if it runs at all
+
+    if (TimeToPrintPauseScreen()) {
+      cinder::gl::clear(backgr_colors[0]);
+      DrawPauseScreen();
+    }
+
+    if (!AnimationEnded()) {
+      if (!TimeToPrintPauseScreen()) {
+        cinder::gl::clear(backgr_colors[0]);
+      }
+
+      cinder::gl::ScopedColor color(player_colors[0]);
+      cinder::gl::drawSolidRect(Rectf(_position_a, _position_b));
+    }
     return;
   }
   if (FadeEnded()) {
-
-    //if (t_other_set_) {
-    //}
-    //DrawEndScreen();
+    DrawEndScreen();
     return;
   }
 
@@ -233,7 +240,7 @@ void MyApp::DrawSpikes() const {
 }
 
 void MyApp::DrawEndScreen() const {
-  //cinder::gl::clear(Color::black());
+  cinder::gl::clear(Color::black());
 
   const cinder::vec2 center = getWindowCenter();
   const cinder::ivec2 size = {1000, 100};
@@ -284,9 +291,16 @@ void MyApp::keyDown(KeyEvent event) {
         in_main_menu_ = false;
         engine_.StartLevel(1);
         sound_tracks_[0]->start();
+        paused_ = false;
+        animation_started_ = false;
+        t_ = 0;
+        SetUpAnimation();
       }
       if (paused_) {
         paused_ = false;
+        animation_started_ = false;
+        t_ = 0;
+        SetUpAnimation();
       }
       break;
     }
@@ -295,6 +309,10 @@ void MyApp::keyDown(KeyEvent event) {
         in_main_menu_ = false;
         engine_.StartLevel(2);
         sound_tracks_[1]->start();
+        paused_ = false;
+        animation_started_ = false;
+        t_ = 0;
+        SetUpAnimation();
       }
       if (paused_) {
         in_main_menu_ = true;
@@ -316,7 +334,16 @@ void MyApp::keyDown(KeyEvent event) {
     }
     case KeyEvent::KEY_ESCAPE: {
       if (!in_main_menu_) {
-        paused_ = !paused_;
+        if (paused_) {
+          paused_ = false;
+          animation_started_ = false;
+          t_ = 0;
+          SetUpAnimation();
+        } else {
+          paused_ = true;
+          t_ = 0;
+          SetUpAnimation();
+        }
       }
       break;
     }
@@ -347,6 +374,10 @@ Color MyApp::PercentFade(Color col) const {
   return col * (1 - percentage);
 }
 
+bool MyApp::TimeToPrintPauseScreen() const {
+  return animation_started_ && t_ >= kPauseScreenPrintTime;
+}
+
 bool MyApp::FadeEnded() const {
   Color col = PercentFade(backgr_colors[0]);
   if (col.r <= 0 && col.g <= 0 && col.b <= 0) {
@@ -354,6 +385,10 @@ bool MyApp::FadeEnded() const {
                 // IT SHOULD WAIT FOR THE COUNTDOWN TO BE OVER
   }
   return col.r <= 0 && col.g <= 0 && col.b <= 0;
+}
+
+bool MyApp::AnimationEnded() {
+  return animation_started_ && t_ >= kAnimationEndTime;
 }
 
 }  // namespace myapp
