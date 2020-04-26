@@ -510,8 +510,4 @@ void MyApp::StartMusic(int level_num) {
   sound_tracks_[level_num]->start();
 }
 
-void MyApp::StopMusic(int level_num) {
-  sound_tracks_[level_num]->stop();
-}
-
 }  // namespace myapp

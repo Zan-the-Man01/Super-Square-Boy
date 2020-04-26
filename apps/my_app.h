@@ -88,10 +88,21 @@ class MyApp : public cinder::app::App {
    */
   void DrawMainMenu() const;
 
+  /**
+   * Draws the levels select menu.
+   */
   void DrawLevelSelect() const;
 
+  /**
+   * Draws the credits screen.
+   */
   void DrawCreditsScreen() const;
 
+  /**
+   * Selects the specified level to play.
+   *
+   * @param level_num the number of the level to play.
+   */
   void SelectLevel(int level_num);
 
   /**
@@ -127,15 +138,21 @@ class MyApp : public cinder::app::App {
    */
   void Reset();
 
+  /**
+   * Pauses the game.
+   */
   void Pause();
 
+  /**
+   * Unpauses the game.
+   */
   void Unpause();
 
+  /**
+   * Starts the music at the specified position and stop all other tracks.
+   * @param level_num
+   */
   void StartMusic(int level_num);
-
-  void StopMusic(int level_num);
-
-  void PauseMusic(int level_num);
 
  private:
   /** The engine that plays a level of the game. */
@@ -168,11 +185,13 @@ class MyApp : public cinder::app::App {
   /** If the game is paused. */
   bool paused_ = false;
 
-  /** If the player is in the main menu.. */
+  /** If the player is in the main menu. */
   bool in_main_menu_ = true;
 
+  /** If the player is in the level select menu. */
   bool in_level_select_ = false;
 
+  /** If the player is in the credits screen. */
   bool in_credits_screen_ = false;
 
   /** If the animation has started. */
