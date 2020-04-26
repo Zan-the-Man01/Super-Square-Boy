@@ -14,7 +14,6 @@
 
 #include <chrono>
 
-// change the name of this, the cinder one is already App
 namespace myapp {
 
 using cinder::Color;
@@ -36,6 +35,7 @@ const std::vector<Color> player_colors = {Color(1, 0.501, 0)};
 const std::vector<Color> backgr_colors = {Color(0, 0.933, 0.921)};
 const double kPauseScreenPrintTime = 0.0075;
 const double kAnimationEndTime = 0.01092;
+const int kEndMusicPos = 3;
 const int kDeathSoundPos = 4;
 
 MyApp::MyApp() : speed_{50}, tile_size_{40} {}
@@ -132,7 +132,7 @@ void MyApp::update() {
     anim_time_ += 0.0001;
   }
 
-  if (in_main_menu_ || paused_) {
+  if (in_main_menu_ || paused_ || in_level_select_ || in_credits_screen_) {
     return;
   }
 
@@ -140,7 +140,7 @@ void MyApp::update() {
   if (!end_reached_ && engine_.EndReached()) {
     time_of_end_reached_ = time;
     end_reached_ = true;
-    StartMusic(3);
+    StartMusic(kEndMusicPos);
   }
 
   if (FadeEnded()) {
@@ -150,7 +150,6 @@ void MyApp::update() {
   if (engine_.IsDead()) {
     return;
   }
-
 
   if (time - last_time_ > std::chrono::milliseconds(speed_)) {
     engine_.Step();
@@ -168,6 +167,17 @@ void MyApp::draw() {
     DrawMainMenu();
     return;
   }
+
+  if (in_level_select_) {
+    DrawLevelSelect();
+    return;
+  }
+
+  if (in_credits_screen_) {
+    DrawCreditsScreen();
+    return;
+  }
+
   if (paused_) {
     if (!animation_started_) {
       animation_started_ = true;
@@ -295,16 +305,142 @@ void MyApp::DrawMainMenu() const {
   const float small_y_offset = 75;
 
 
-  PrintText("SUPER SQUARE BOY", color, size, {center.x, center.y - main_y_offset}, 100);
+  /*PrintText("SUPER SQUARE BOY", color, size, {center.x, center.y - main_y_offset}, 100);
   PrintText("1: LEVEL ONE", color, size, center, 50);
   PrintText("2: LEVEL TWO", color, size,
+            {center.x, center.y + small_y_offset}, 50);
+  PrintText("3: EXIT", color, size,
+            {center.x, center.y + (2 * small_y_offset)}, 50);*/
+  PrintText("SUPER SQUARE BOY", color, size, {center.x, center.y - main_y_offset}, 100);
+  PrintText("1: LEVEL SELECT", color, size, center, 50);
+  PrintText("2: CREDITS", color, size,
             {center.x, center.y + small_y_offset}, 50);
   PrintText("3: EXIT", color, size,
             {center.x, center.y + (2 * small_y_offset)}, 50);
 }
 
+void MyApp::DrawLevelSelect() const {
+  cinder::gl::clear(backgr_colors[0]);
+
+  const cinder::vec2 center = getWindowCenter();
+  const cinder::ivec2 size = {1000, 100};
+  const Color color = player_colors[0];
+  const float main_y_offset = 150;
+  const float small_y_offset = 75;
+
+
+  PrintText("SUPER SQUARE BOY", color, size, {center.x, center.y - main_y_offset}, 100);
+  PrintText("1: LEVEL ONE", color, size, center, 50);
+  PrintText("2: LEVEL TWO", color, size,
+            {center.x, center.y + small_y_offset}, 50);
+  PrintText("3: BACK", color, size,
+            {center.x, center.y + (2 * small_y_offset)}, 50);
+}
+
+void MyApp::DrawCreditsScreen() const {
+  cinder::gl::clear(backgr_colors[0]);
+
+  const cinder::vec2 center = getWindowCenter();
+  const cinder::ivec2 size = {1000, 100};
+  const Color color = player_colors[0];
+  const float main_y_offset = 150;
+  const float small_y_offset = 50;
+
+
+  PrintText("SUPER SQUARE BOY", color, size, {center.x, center.y - main_y_offset}, 100);
+  PrintText("CREATED BY ALEXANDER MARCOZZI", color, size, center, 40);
+  PrintText("EMAIL: alex.marcozzi1@gmail.com", color, size,
+            {center.x, center.y + small_y_offset}, 40);
+  PrintText("MUSIC", color, size,
+            {center.x, center.y + (3 * small_y_offset)}, 40);
+  PrintText("LEVEL 1: [PLACEHOLDER] - [ARTIST]", color, size,
+            {center.x, center.y + (4 * small_y_offset)}, 40);
+
+  PrintText("LEVEL 2: [PLACEHOLDER] - [ARTIST]", color, size,
+            {center.x, center.y + (5 * small_y_offset)}, 40);
+
+  PrintText("LEVEL 3: [PLACEHOLDER] - [ARTIST]", color, size,
+            {center.x, center.y + (6 * small_y_offset)}, 40);
+
+  PrintText("LEVEL 4: [PLACEHOLDER] - [ARTIST]", color, size,
+            {center.x, center.y + (7 * small_y_offset)}, 40);
+}
+
 void MyApp::keyDown(KeyEvent event) {
   switch (event.getCode()) {
+    case KeyEvent::KEY_1: {
+      if (in_main_menu_) {
+        in_main_menu_ = false;
+        in_level_select_ = true;
+      } else if (in_level_select_) {
+        current_level_ = 1;
+        in_level_select_ = false;
+        engine_.StartLevel(current_level_);
+        paused_ = false;
+        animation_started_ = false;
+        anim_time_ = 0;
+        SetUpAnimation();
+      } else if (paused_) {
+        Unpause();
+      }
+
+      break;
+    }
+    case KeyEvent::KEY_2: {
+      if (in_main_menu_) {
+        in_main_menu_ = false;
+        in_credits_screen_ = true;
+      } else if (in_level_select_) {
+        current_level_ = 2;
+        in_level_select_ = false;
+        engine_.StartLevel(current_level_);
+        paused_ = false;
+        animation_started_ = false;
+        anim_time_ = 0;
+        SetUpAnimation();
+      } else if (paused_) {
+        Reset();
+      }
+      break;
+    }
+    case KeyEvent::KEY_3: {
+      if (in_main_menu_) {
+        exit(0);
+      } else if (in_level_select_) {
+        in_level_select_ = false;
+        in_main_menu_ = true;
+      } else if (in_credits_screen_) {
+        in_credits_screen_ = false;
+        in_main_menu_ = true;
+      }
+
+      break;
+    }
+    case KeyEvent::KEY_UP:
+    case KeyEvent::KEY_SPACE: {
+      engine_.AttemptJump();
+      break;
+    }
+    case KeyEvent::KEY_ESCAPE: {
+      if (in_level_select_) {
+        in_level_select_ = false;
+        in_main_menu_ = true;
+      } else if (in_credits_screen_) {
+        in_credits_screen_ = false;
+        in_main_menu_ = true;
+      }
+
+      if (!in_main_menu_) {
+        if (paused_) {
+          Unpause();
+        } else {
+          Pause();
+        }
+      }
+      break;
+    }
+  }
+  /*switch (event.getCode()) {
     case KeyEvent::KEY_1: {
       if (in_main_menu_) {
         current_level_ = 1;
@@ -316,10 +452,7 @@ void MyApp::keyDown(KeyEvent event) {
         SetUpAnimation();
       }
       if (paused_) {
-        paused_ = false;
-        animation_started_ = false;
-        anim_time_ = 0;
-        SetUpAnimation();
+        Unpause();
       }
       break;
     }
@@ -352,19 +485,14 @@ void MyApp::keyDown(KeyEvent event) {
     case KeyEvent::KEY_ESCAPE: {
       if (!in_main_menu_) {
         if (paused_) {
-          paused_ = false;
-          animation_started_ = false;
-          anim_time_ = 0;
-          SetUpAnimation();
+          Unpause();
         } else {
-          paused_ = true;
-          anim_time_ = 0;
-          SetUpAnimation();
+          Pause();
         }
       }
       break;
     }
-  }
+  }*/
 }
 
 void MyApp::keyUp(KeyEvent event) {
@@ -397,10 +525,6 @@ bool MyApp::TimeToPrintPauseScreen() const {
 
 bool MyApp::FadeEnded() const {
   Color col = FadedColor(backgr_colors[0]);
-  if (col.r <= 0 && col.g <= 0 && col.b <= 0) {
-    int x = 0;  // THIS IS GETTING CALLED IMMEDIATELY WHEN THE END IS REACHED WHEN
-                // IT SHOULD WAIT FOR THE COUNTDOWN TO BE OVER
-  }
   return col.r <= 0 && col.g <= 0 && col.b <= 0;
 }
 
@@ -415,9 +539,26 @@ void MyApp::Reset() {
   end_reached_ = false;
   paused_ = false;
   in_main_menu_ = true;
+  in_level_select_ = false;
+  in_credits_screen_ = false;
   animation_started_ = false;
   engine_.Reset();
   StartMusic(0);
+}
+
+void MyApp::Pause() {
+  sound_tracks_[current_level_]->pause();
+  paused_ = true;
+  anim_time_ = 0;
+  SetUpAnimation();
+}
+
+void MyApp::Unpause() {
+  sound_tracks_[current_level_]->start();
+  paused_ = false;
+  animation_started_ = false;
+  anim_time_ = 0;
+  SetUpAnimation();
 }
 
 void MyApp::StartMusic(int level_num) {

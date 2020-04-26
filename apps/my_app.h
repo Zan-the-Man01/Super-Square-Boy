@@ -88,6 +88,10 @@ class MyApp : public cinder::app::App {
    */
   void DrawMainMenu() const;
 
+  void DrawLevelSelect() const;
+
+  void DrawCreditsScreen() const;
+
   /**
    * Gets the correctly faded color based on how long the fade has lasted.
    * @param col the color to fade.
@@ -121,9 +125,15 @@ class MyApp : public cinder::app::App {
    */
   void Reset();
 
+  void Pause();
+
+  void Unpause();
+
   void StartMusic(int level_num);
 
   void StopMusic(int level_num);
+
+  void PauseMusic(int level_num);
 
  private:
   /** The engine that plays a level of the game. */
@@ -158,6 +168,10 @@ class MyApp : public cinder::app::App {
 
   /** If the player is in the main menu.. */
   bool in_main_menu_ = true;
+
+  bool in_level_select_ = false;
+
+  bool in_credits_screen_ = false;
 
   /** If the animation has started. */
   bool animation_started_ = false;
