@@ -26,3 +26,10 @@
     - Implement level select
     - Implement spikes
     - Start on music implementation
+    
+- **4/23/20**
+    - Implement Choreograph
+    - Add simple pause animation
+
+- **4/26/20**
+    - Improve pause animation
