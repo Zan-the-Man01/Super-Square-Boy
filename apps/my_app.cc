@@ -28,7 +28,7 @@ using game::Location;
 
 using cinder::app::KeyEvent;
 
-const seconds kCountdownTime = seconds(2);
+const seconds kCountdownTime = seconds(6);
 const char kNormalFont[] = "Azonix";
 const char kBoldFont[] = "Arial Bold";
 const char kDifferentFont[] = "Papyrus";
@@ -36,6 +36,7 @@ const std::vector<Color> player_colors = {Color(1, 0.501, 0)};
 const std::vector<Color> backgr_colors = {Color(0, 0.933, 0.921)};
 const double kPauseScreenPrintTime = 0.0075;
 const double kAnimationEndTime = 0.01092;
+const int kDeathSoundPos = 4;
 
 MyApp::MyApp() : speed_{50}, tile_size_{40} {}
 
@@ -45,11 +46,26 @@ void MyApp::setup() {
 
   try {
     cinder::audio::SourceFileRef sourceFile =
+        cinder::audio::load(cinder::app::loadAsset("menu.mp3"));
+    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
+
+    sourceFile =
         cinder::audio::load(cinder::app::loadAsset("music.mp3"));
     sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
+
     sourceFile =
         cinder::audio::load(cinder::app::loadAsset("music2.mp3"));
     sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
+
+    sourceFile =
+        cinder::audio::load(cinder::app::loadAsset("end.mp3"));
+    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
+
+    sourceFile =
+        cinder::audio::load(cinder::app::loadAsset("death.mp3"));
+    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
+
+    StartMusic(0);
   } catch (const std::exception& ex) {
     exit(1);
   }
@@ -111,7 +127,6 @@ void PrintText(const std::string& text, const C& color, const cinder::ivec2& siz
 }
 
 void MyApp::update() {
-
   timeline_.step( ch::Time(anim_time_));
   if (animation_started_) {
     anim_time_ += 0.0001;
@@ -125,6 +140,7 @@ void MyApp::update() {
   if (!end_reached_ && engine_.EndReached()) {
     time_of_end_reached_ = time;
     end_reached_ = true;
+    StartMusic(3);
   }
 
   if (FadeEnded()) {
@@ -140,17 +156,15 @@ void MyApp::update() {
     engine_.Step();
     last_time_ = time;
   }
+
+  if (just_reset_) {
+    StartMusic(current_level_);
+    just_reset_ = false;
+  }
 }
 
 void MyApp::draw() {
   if (in_main_menu_) {
-    //cinder::gl::drawSolidCircle( _position_a, 30.0f );
-    //cinder::gl::drawSolidEllipse(_position_a, 30.0f, 20.0f);
-
-    //const Location loc = engine_.GetPlayerSquare().GetLocation();
-
-    //cinder::gl::color( Color( cinder::CM_HSV, 0.96f, 1.0f, 1.0f ) );
-    //cinder::gl::drawSolidCircle( _position_b, 30.0f );
     DrawMainMenu();
     return;
   }
@@ -185,9 +199,12 @@ void MyApp::draw() {
     const auto time = system_clock::now();
     if (just_died_) {
       just_died_ = false;
+      //StopMusic(current_level_);
+      StartMusic(kDeathSoundPos);
       time_of_death_ = time;
-    } else if (time - time_of_death_ > std::chrono::milliseconds(1000)){
+    } else if (time - time_of_death_ > std::chrono::milliseconds(1000)) {
       engine_.Reset();
+      just_reset_ = true;
       just_died_ = true;
     }
   }
@@ -290,9 +307,9 @@ void MyApp::keyDown(KeyEvent event) {
   switch (event.getCode()) {
     case KeyEvent::KEY_1: {
       if (in_main_menu_) {
+        current_level_ = 1;
         in_main_menu_ = false;
-        engine_.StartLevel(1);
-        sound_tracks_[0]->start();
+        engine_.StartLevel(current_level_);
         paused_ = false;
         animation_started_ = false;
         anim_time_ = 0;
@@ -308,18 +325,16 @@ void MyApp::keyDown(KeyEvent event) {
     }
     case KeyEvent::KEY_2: {
       if (in_main_menu_) {
+        current_level_ = 2;
         in_main_menu_ = false;
-        engine_.StartLevel(2);
-        sound_tracks_[1]->start();
+        engine_.StartLevel(current_level_);
         paused_ = false;
         animation_started_ = false;
         anim_time_ = 0;
         SetUpAnimation();
       }
       if (paused_) {
-        in_main_menu_ = true;
-        paused_ = false;
-        engine_.Reset();
+        Reset();
       }
       break;
     }
@@ -363,7 +378,7 @@ void MyApp::keyUp(KeyEvent event) {
 }
 
 Color MyApp::FadedColor(Color col) const {
-  if (!engine_.EndReached()) {
+  if (!engine_.EndReached() || !end_reached_) {
     return col;
   }
 
@@ -393,8 +408,28 @@ bool MyApp::AnimationEnded() {
   return animation_started_ && anim_time_ >= kAnimationEndTime;
 }
 
+void MyApp::Reset() {
+  current_level_ = 0;
+  just_died_ = true;
+  just_reset_ = true;
+  end_reached_ = false;
+  paused_ = false;
+  in_main_menu_ = true;
+  animation_started_ = false;
+  engine_.Reset();
+  StartMusic(0);
+}
+
+void MyApp::StartMusic(int level_num) {
+  for (auto& track : sound_tracks_) {
+    track->stop();
+  }
+
+  sound_tracks_[level_num]->start();
+}
+
+void MyApp::StopMusic(int level_num) {
+  sound_tracks_[level_num]->stop();
+}
+
 }  // namespace myapp
-
-// TODO: music
-
-// TODO: animations with Coreograph (???)

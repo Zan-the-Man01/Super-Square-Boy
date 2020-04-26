@@ -33,3 +33,4 @@
 
 - **4/26/20**
     - Improve pause animation
+    - Add documentation

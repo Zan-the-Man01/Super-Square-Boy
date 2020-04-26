@@ -116,6 +116,15 @@ class MyApp : public cinder::app::App {
    */
   bool AnimationEnded();
 
+  /**
+   * Resets the game state.
+   */
+  void Reset();
+
+  void StartMusic(int level_num);
+
+  void StopMusic(int level_num);
+
  private:
   /** The engine that plays a level of the game. */
   game::Engine engine_;
@@ -137,6 +146,9 @@ class MyApp : public cinder::app::App {
 
   /** If the player has just died. */
   bool just_died_ = true;
+
+  /** If the game has just been reset. */
+  bool just_reset_ = true;
 
   /** If the player has reached the end. */
   bool end_reached_ = false;
@@ -165,6 +177,8 @@ class MyApp : public cinder::app::App {
   /** The time position of the animation (between 0 and 1). */
   double anim_time_ = 0;
 
+  /** The current level being played */
+  int current_level_ = 0;
 };
 
 }  // namespace myapp
