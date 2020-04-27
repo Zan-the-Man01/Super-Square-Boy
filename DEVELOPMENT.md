@@ -44,3 +44,12 @@
     - Replace Row/Col system with X/Y
     - Change PlayerSquare to Player
     - Add documentation to player.h
+    
+- **4/27/20**
+    - Make spikes actually shaped like spikes
+    
+- **TODO**
+    - Make levels
+    - Delete example.h and example.cc
+    - Make death from above possible (???)
+        - requires further testing

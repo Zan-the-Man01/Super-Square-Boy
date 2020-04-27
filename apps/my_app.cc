@@ -257,14 +257,15 @@ void MyApp::DrawSquares() const {
 }
 
 void MyApp::DrawSpikes() const {
-  cinder::gl::color(Color(1, 0, 0));
+  cinder::gl::color(Color(0.5, 0.5, 0.5));
   const std::vector<Location> locs = engine_.GetFrame().GetSpikeLocs();
 
   for (const auto& loc : locs) {
-    cinder::gl::drawSolidRect(Rectf(tile_size_ * loc.X(),
-                                    tile_size_ * loc.Y(),
-                                    tile_size_ * loc.X() + tile_size_,
-                                    tile_size_ * loc.Y() + tile_size_));
+    cinder::gl::drawSolidTriangle(
+        cinder::vec2(tile_size_ * loc.X(),tile_size_ * loc.Y() + tile_size_),
+        cinder::vec2(tile_size_ * loc.X() + tile_size_,tile_size_ * loc.Y() + tile_size_),
+        cinder::vec2(tile_size_ * loc.X() + (tile_size_ / 2),
+            tile_size_ * loc.Y()));
   }
 }
 
