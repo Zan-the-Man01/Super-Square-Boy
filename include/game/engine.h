@@ -98,6 +98,8 @@ class Engine {
    */
   bool EndReached() const;
 
+  size_t GetNumAttempts() const;
+
  private:
 
   /**

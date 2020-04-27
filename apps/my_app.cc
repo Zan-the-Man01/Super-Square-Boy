@@ -30,7 +30,9 @@ using cinder::app::KeyEvent;
 const seconds kCountdownTime = seconds(6);
 const std::string kNormalFont = "Azonix";
 const std::vector<Color> player_colors = {Color(1, 0.501, 0)};
-const std::vector<Color> backgr_colors = {Color(0, 0.933, 0.921)};
+const std::vector<Color> backgr_colors = {Color(0, 0.933, 0.921),
+                                          Color(0, 0.933, 0.921),
+                                          Color(0.72941, 0.45098, 1)};
 const double kPauseScreenPrintTime = 0.0075;
 const double kAnimationEndTime = 0.01092;
 const int kEndMusicPos = 3;
@@ -184,13 +186,13 @@ void SuperSquareBoy::draw() {
     }
 
     if (TimeToPrintPauseScreen()) {
-      cinder::gl::clear(backgr_colors[0]);
+      cinder::gl::clear(backgr_colors[current_level_]);
       DrawPauseScreen();
     }
 
     if (!AnimationEnded()) {
       if (!TimeToPrintPauseScreen()) {
-        cinder::gl::clear(backgr_colors[0]);
+        cinder::gl::clear(backgr_colors[current_level_]);
       }
 
       cinder::gl::ScopedColor color(player_colors[0]);
@@ -209,27 +211,30 @@ void SuperSquareBoy::draw() {
       just_died_ = false;
       StartMusic(kDeathSoundPos);
       time_of_death_ = time;
+
     } else if (time - time_of_death_ > std::chrono::seconds(1)) {
       engine_.Reset();
       just_reset_ = true;
       just_died_ = true;
+      num_attempts++;
     }
   }
 
   cinder::gl::clear();
   DrawBackground();
+  DrawAttemptsCounter();
   DrawPlayer();
   DrawSquares();
   DrawSpikes();
 }
 
 void SuperSquareBoy::DrawBackground() const {
-  cinder::gl::clear(FadedColor(backgr_colors[0]));
+  cinder::gl::clear(FadedColor(backgr_colors[current_level_]));
 }
 
 void SuperSquareBoy::DrawPlayer() const {
   if (engine_.IsDead()) {
-    cinder::gl::color(FadedColor(backgr_colors[0]));
+    cinder::gl::color(FadedColor(backgr_colors[current_level_]));
   } else {
     cinder::gl::color(FadedColor(player_colors[0]));
   }
@@ -292,7 +297,7 @@ void SuperSquareBoy::DrawPauseScreen() const {
 }
 
 void SuperSquareBoy::DrawMainMenu() const {
-  cinder::gl::clear(backgr_colors[0]);
+  cinder::gl::clear(backgr_colors[current_level_]);
 
   const cinder::vec2 center = getWindowCenter();
   const cinder::ivec2 size = {1000, 100};
@@ -309,7 +314,7 @@ void SuperSquareBoy::DrawMainMenu() const {
 }
 
 void SuperSquareBoy::DrawLevelSelect() const {
-  cinder::gl::clear(backgr_colors[0]);
+  cinder::gl::clear(backgr_colors[current_level_]);
 
   const cinder::vec2 center = getWindowCenter();
   const cinder::ivec2 size = {1000, 100};
@@ -329,7 +334,7 @@ void SuperSquareBoy::DrawLevelSelect() const {
 }
 
 void SuperSquareBoy::DrawCreditsScreen() const {
-  cinder::gl::clear(backgr_colors[0]);
+  cinder::gl::clear(backgr_colors[current_level_]);
 
   const cinder::vec2 center = getWindowCenter();
   const cinder::ivec2 size = {1000, 100};
@@ -363,6 +368,16 @@ void SuperSquareBoy::DrawCreditsScreen() const {
 
   PrintText("[ESC]: BACK", color, size,
             {center.x - left_x_offset, center.y + (7.5 * small_y_offset)}, 30);
+}
+
+void SuperSquareBoy::DrawAttemptsCounter() const {
+  const cinder::vec2 center = getWindowCenter();
+  const cinder::ivec2 size = {1000, 100};
+  const Color color = FadedColor(player_colors[0]);
+  const float y_offset = 300;
+
+  PrintText("ATTEMPT " + std::to_string(num_attempts), color, size,
+            {center.x, center.y - y_offset}, 80);
 }
 
 void SuperSquareBoy::SelectLevel(int level_num) {
@@ -462,7 +477,7 @@ bool SuperSquareBoy::TimeToPrintPauseScreen() const {
 }
 
 bool SuperSquareBoy::FadeEnded() const {
-  Color col = FadedColor(backgr_colors[0]);
+  Color col = FadedColor(backgr_colors[current_level_]);
   return col.r <= 0 && col.g <= 0 && col.b <= 0;
 }
 

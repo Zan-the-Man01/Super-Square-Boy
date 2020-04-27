@@ -104,6 +104,11 @@ class SuperSquareBoy : public cinder::app::App {
   void DrawCreditsScreen() const;
 
   /**
+   * Draws the attempts counter.
+   */
+  void DrawAttemptsCounter() const;
+
+  /**
    * Selects the specified level to play.
    *
    * @param level_num the number of the level to play.
@@ -219,6 +224,9 @@ class SuperSquareBoy : public cinder::app::App {
 
   /** The current level being played */
   int current_level_ = 0;
+
+  /** The number of attempts on the current level. */
+  size_t num_attempts = 1;
 };
 
 }  // namespace myapp

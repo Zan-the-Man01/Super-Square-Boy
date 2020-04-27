@@ -52,4 +52,3 @@
     
 - **TODO**
     - Make levels
-    - Delete example.h and example.cc
