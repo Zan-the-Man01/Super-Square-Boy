@@ -47,9 +47,9 @@
     
 - **4/27/20**
     - Make spikes actually shaped like spikes
+    - Add proper music for levels 1 and 2
+    - Fix things mentioned in feedback
     
 - **TODO**
     - Make levels
     - Delete example.h and example.cc
-    - Make death from above possible (???)
-        - requires further testing

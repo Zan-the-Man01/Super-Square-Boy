@@ -14,7 +14,7 @@
 
 #include <chrono>
 
-namespace myapp {
+namespace supersquareboy {
 
 using cinder::Color;
 using cinder::ColorA;
@@ -28,9 +28,7 @@ using game::Location;
 using cinder::app::KeyEvent;
 
 const seconds kCountdownTime = seconds(6);
-const char kNormalFont[] = "Azonix";
-const char kBoldFont[] = "Arial Bold";
-const char kDifferentFont[] = "Papyrus";
+const std::string kNormalFont = "Azonix";
 const std::vector<Color> player_colors = {Color(1, 0.501, 0)};
 const std::vector<Color> backgr_colors = {Color(0, 0.933, 0.921)};
 const double kPauseScreenPrintTime = 0.0075;
@@ -38,42 +36,14 @@ const double kAnimationEndTime = 0.01092;
 const int kEndMusicPos = 3;
 const int kDeathSoundPos = 4;
 
-MyApp::MyApp() : speed_{50}, tile_size_{40} {}
+SuperSquareBoy::SuperSquareBoy() : speed_{50}, tile_size_{40} {}
 
-void MyApp::setup() {
-  //cinder::gl::enableDepthWrite();
-  //cinder::gl::enableDepthRead();
-
-  try {
-    cinder::audio::SourceFileRef sourceFile =
-        cinder::audio::load(cinder::app::loadAsset("menu.mp3"));
-    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
-
-    sourceFile =
-        cinder::audio::load(cinder::app::loadAsset("music.mp3"));
-    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
-
-    sourceFile =
-        cinder::audio::load(cinder::app::loadAsset("music2.mp3"));
-    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
-
-    sourceFile =
-        cinder::audio::load(cinder::app::loadAsset("end.mp3"));
-    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
-
-    sourceFile =
-        cinder::audio::load(cinder::app::loadAsset("death.mp3"));
-    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
-
-    StartMusic(0);
-  } catch (const std::exception& ex) {
-    exit(1);
-  }
-
+void SuperSquareBoy::setup() {
+  SetUpSound();
   SetUpAnimation();
 }
 
-void MyApp::SetUpAnimation() {
+void SuperSquareBoy::SetUpAnimation() {
   // Create a procedural phrase that moves vertically on a sine wave.
   // Procedural phrases can evaluate any function you like.
   ch::PhraseRef<cinder::vec2> bounce = ch::makeProcedure<cinder::vec2>( 2.0, [] ( ch::Time t, ch::Time duration ) {
@@ -107,6 +77,34 @@ void MyApp::SetUpAnimation() {
   timeline_.jumpTo( 0 );
 }
 
+void SuperSquareBoy::SetUpSound() {
+  try {
+    cinder::audio::SourceFileRef sourceFile =
+        cinder::audio::load(cinder::app::loadAsset("menu.mp3"));
+    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
+
+    sourceFile =
+        cinder::audio::load(cinder::app::loadAsset("music1.mp3"));
+    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
+
+    sourceFile =
+        cinder::audio::load(cinder::app::loadAsset("music2.mp3"));
+    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
+
+    sourceFile =
+        cinder::audio::load(cinder::app::loadAsset("end.mp3"));
+    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
+
+    sourceFile =
+        cinder::audio::load(cinder::app::loadAsset("death.mp3"));
+    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
+
+    StartMusic(0);
+  } catch (const std::exception& ex) {
+    exit(1);
+  }
+}
+
 template <typename C>
 void PrintText(const std::string& text, const C& color, const cinder::ivec2& size,
                const cinder::vec2& loc, const size_t font_size) {
@@ -126,7 +124,7 @@ void PrintText(const std::string& text, const C& color, const cinder::ivec2& siz
   cinder::gl::draw(texture, locp);
 }
 
-void MyApp::update() {
+void SuperSquareBoy::update() {
   timeline_.step( ch::Time(anim_time_));
   if (animation_started_) {
     anim_time_ += 0.0001;
@@ -162,7 +160,7 @@ void MyApp::update() {
   }
 }
 
-void MyApp::draw() {
+void SuperSquareBoy::draw() {
   if (in_main_menu_) {
     DrawMainMenu();
     return;
@@ -209,10 +207,9 @@ void MyApp::draw() {
     const auto time = system_clock::now();
     if (just_died_) {
       just_died_ = false;
-      //StopMusic(current_level_);
       StartMusic(kDeathSoundPos);
       time_of_death_ = time;
-    } else if (time - time_of_death_ > std::chrono::milliseconds(1000)) {
+    } else if (time - time_of_death_ > std::chrono::seconds(1)) {
       engine_.Reset();
       just_reset_ = true;
       just_died_ = true;
@@ -226,11 +223,11 @@ void MyApp::draw() {
   DrawSpikes();
 }
 
-void MyApp::DrawBackground() const {
+void SuperSquareBoy::DrawBackground() const {
   cinder::gl::clear(FadedColor(backgr_colors[0]));
 }
 
-void MyApp::DrawPlayer() const {
+void SuperSquareBoy::DrawPlayer() const {
   if (engine_.IsDead()) {
     cinder::gl::color(FadedColor(backgr_colors[0]));
   } else {
@@ -244,7 +241,7 @@ void MyApp::DrawPlayer() const {
                                   tile_size_ * loc.Y() + tile_size_));
 }
 
-void MyApp::DrawSquares() const {
+void SuperSquareBoy::DrawSquares() const {
   cinder::gl::color(Color::black());
   const std::vector<Location> locs = engine_.GetFrame().GetSquareLocs();
 
@@ -256,7 +253,7 @@ void MyApp::DrawSquares() const {
   }
 }
 
-void MyApp::DrawSpikes() const {
+void SuperSquareBoy::DrawSpikes() const {
   cinder::gl::color(Color(0.5, 0.5, 0.5));
   const std::vector<Location> locs = engine_.GetFrame().GetSpikeLocs();
 
@@ -269,7 +266,7 @@ void MyApp::DrawSpikes() const {
   }
 }
 
-void MyApp::DrawEndScreen() const {
+void SuperSquareBoy::DrawEndScreen() const {
   cinder::gl::clear(Color::black());
 
   const cinder::vec2 center = getWindowCenter();
@@ -280,7 +277,7 @@ void MyApp::DrawEndScreen() const {
   PrintText("LEVEL COMPLETE", color, size, center, 100);
 }
 
-void MyApp::DrawPauseScreen() const {
+void SuperSquareBoy::DrawPauseScreen() const {
   const cinder::vec2 center = getWindowCenter();
   const cinder::ivec2 size = {1000, 100};
   const Color color = player_colors[0];
@@ -294,7 +291,7 @@ void MyApp::DrawPauseScreen() const {
       {center.x, center.y + small_y_offset}, 50);
 }
 
-void MyApp::DrawMainMenu() const {
+void SuperSquareBoy::DrawMainMenu() const {
   cinder::gl::clear(backgr_colors[0]);
 
   const cinder::vec2 center = getWindowCenter();
@@ -311,7 +308,7 @@ void MyApp::DrawMainMenu() const {
             {center.x, center.y + (2 * small_y_offset)}, 50);
 }
 
-void MyApp::DrawLevelSelect() const {
+void SuperSquareBoy::DrawLevelSelect() const {
   cinder::gl::clear(backgr_colors[0]);
 
   const cinder::vec2 center = getWindowCenter();
@@ -331,7 +328,7 @@ void MyApp::DrawLevelSelect() const {
             {center.x - left_x_offset, center.y + (7.5 * esc_y_offset)}, 30);
 }
 
-void MyApp::DrawCreditsScreen() const {
+void SuperSquareBoy::DrawCreditsScreen() const {
   cinder::gl::clear(backgr_colors[0]);
 
   const cinder::vec2 center = getWindowCenter();
@@ -340,7 +337,6 @@ void MyApp::DrawCreditsScreen() const {
   const float main_y_offset = 150;
   const float small_y_offset = 50;
   const float left_x_offset = 500;
-
 
   PrintText("SUPER SQUARE BOY", color, size, {center.x, center.y - main_y_offset}, 100);
   PrintText("CREATED BY ALEXANDER MARCOZZI", color, size,
@@ -353,10 +349,10 @@ void MyApp::DrawCreditsScreen() const {
   PrintText("MAIN MENU: 'AWAY WITH THE FAIRIES' - PHILANTHROPE", color, size,
             {center.x, center.y + (3 * small_y_offset)}, 40);
 
-  PrintText("LEVEL 1: [PLACEHOLDER] - [ARTIST]", color, size,
+  PrintText("LEVEL 1: RPM - ENV", color, size,
             {center.x, center.y + (4 * small_y_offset)}, 40);
 
-  PrintText("LEVEL 2: [PLACEHOLDER] - [ARTIST]", color, size,
+  PrintText("LEVEL 2: DEEP BLUE - K-391", color, size,
             {center.x, center.y + (5 * small_y_offset)}, 40);
 
   PrintText("LEVEL 3: [PLACEHOLDER] - [ARTIST]", color, size,
@@ -369,7 +365,7 @@ void MyApp::DrawCreditsScreen() const {
             {center.x - left_x_offset, center.y + (7.5 * small_y_offset)}, 30);
 }
 
-void MyApp::SelectLevel(int level_num) {
+void SuperSquareBoy::SelectLevel(int level_num) {
   current_level_ = level_num;
   in_level_select_ = false;
   engine_.StartLevel(current_level_);
@@ -379,7 +375,7 @@ void MyApp::SelectLevel(int level_num) {
   SetUpAnimation();
 }
 
-void MyApp::keyDown(KeyEvent event) {
+void SuperSquareBoy::keyDown(KeyEvent event) {
   switch (event.getCode()) {
     case KeyEvent::KEY_1: {
       if (in_main_menu_) {
@@ -437,7 +433,7 @@ void MyApp::keyDown(KeyEvent event) {
   }
 }
 
-void MyApp::keyUp(KeyEvent event) {
+void SuperSquareBoy::keyUp(KeyEvent event) {
   switch (event.getCode()) {
     case KeyEvent::KEY_UP:
     case KeyEvent::KEY_SPACE: {
@@ -447,7 +443,7 @@ void MyApp::keyUp(KeyEvent event) {
   }
 }
 
-Color MyApp::FadedColor(Color col) const {
+Color SuperSquareBoy::FadedColor(Color col) const {
   if (!engine_.EndReached() || !end_reached_) {
     return col;
   }
@@ -461,20 +457,20 @@ Color MyApp::FadedColor(Color col) const {
   return col * (1 - percentage);
 }
 
-bool MyApp::TimeToPrintPauseScreen() const {
+bool SuperSquareBoy::TimeToPrintPauseScreen() const {
   return animation_started_ && anim_time_ >= kPauseScreenPrintTime;
 }
 
-bool MyApp::FadeEnded() const {
+bool SuperSquareBoy::FadeEnded() const {
   Color col = FadedColor(backgr_colors[0]);
   return col.r <= 0 && col.g <= 0 && col.b <= 0;
 }
 
-bool MyApp::AnimationEnded() {
+bool SuperSquareBoy::AnimationEnded() {
   return animation_started_ && anim_time_ >= kAnimationEndTime;
 }
 
-void MyApp::Reset() {
+void SuperSquareBoy::Reset() {
   current_level_ = 0;
   just_died_ = true;
   just_reset_ = true;
@@ -488,14 +484,14 @@ void MyApp::Reset() {
   StartMusic(0);
 }
 
-void MyApp::Pause() {
+void SuperSquareBoy::Pause() {
   sound_tracks_[current_level_]->pause();
   paused_ = true;
   anim_time_ = 0;
   SetUpAnimation();
 }
 
-void MyApp::Unpause() {
+void SuperSquareBoy::Unpause() {
   sound_tracks_[current_level_]->start();
   paused_ = false;
   animation_started_ = false;
@@ -503,7 +499,7 @@ void MyApp::Unpause() {
   SetUpAnimation();
 }
 
-void MyApp::StartMusic(int level_num) {
+void SuperSquareBoy::StartMusic(int level_num) {
   for (auto& track : sound_tracks_) {
     track->stop();
   }

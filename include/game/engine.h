@@ -124,7 +124,7 @@ class Engine {
   Frame frame_;
 
   /** The player. */
-  Player playerSquare;
+  Player player_square_;
 
   /** If the player is attempting to jump. */
   bool attempt_jump_ = false;

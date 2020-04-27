@@ -21,16 +21,15 @@ void Engine::Step() {
   bool spike_below = ItemBelowPlayer(spike_locs);
 
   if (!square_below && !spike_below) {
-    if (playerSquare.TurnsRising() == 0) {
-      playerSquare.Fall();
+    if (player_square_.TurnsRising() == 0) {
+      player_square_.Fall();
     } else {
-      playerSquare.Rise();
+      player_square_.Rise();
 
-      if (playerSquare.TurnsRising() >= 3)
-      playerSquare.StopRising();
+      if (player_square_.TurnsRising() >= 3) player_square_.StopRising();
     }
   } else if (attempt_jump_) {
-    playerSquare.Rise();
+    player_square_.Rise();
   }
 
   if (!ItemInFrontOfPlayer(square_locs) &&
@@ -44,13 +43,13 @@ void Engine::Step() {
 
 void Engine::Reset() {
   frame_.Reset();
-  playerSquare.Reset();
+  player_square_.Reset();
   attempt_jump_ = false;
   dead_ = false;
 }
 
 Player Engine::GetPlayerSquare() const {
-  return playerSquare;
+  return player_square_;
 }
 
 Frame Engine::GetFrame() const {
@@ -66,7 +65,7 @@ bool Engine::ItemInFrontOfPlayer(const std::vector<Location>& item_locs) {
 }
 
 bool Engine::IsItemToDirection(const std::vector<Location>& item_locs, Location direction) {
-  Location player_loc = playerSquare.GetLocation();
+  Location player_loc = player_square_.GetLocation();
   Location valid_loc = player_loc + direction;
 
   for (Location loc : item_locs) {

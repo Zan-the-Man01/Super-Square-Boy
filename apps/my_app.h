@@ -8,18 +8,18 @@
 #include <cinder/audio/audio.h>
 #include <game/engine.h>
 
-namespace myapp {
+namespace supersquareboy {
 
 /**
  * Class that plays the game Super Square Boy.
  */
-class MyApp : public cinder::app::App {
+class SuperSquareBoy : public cinder::app::App {
  public:
 
   /**
    * Default constructor.
    */
-  MyApp();
+  SuperSquareBoy();
 
   /**
    * Sets up the game to be played.
@@ -52,6 +52,11 @@ class MyApp : public cinder::app::App {
    * Sets up the animation used for the pause screen.
    */
   void SetUpAnimation();
+
+  /**
+   * Sets up the sound used for the game.
+   */
+  void SetUpSound();
 
   /**
    * Draws the background of the game.
