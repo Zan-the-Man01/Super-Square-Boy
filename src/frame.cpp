@@ -7,7 +7,7 @@
 
 #include <string>
 
-namespace game {
+namespace supersquareboy {
 Frame::Frame() {
 }
 
@@ -61,13 +61,13 @@ void Frame::Reset() {
 }
 
 void Frame::FillLine(std::string& line) {
-  for (size_t i = 0; i < line.size(); i++) {
-    if (line[i] != 'O' && line[i] != 'X' && line[i] != 'E') {
-      line[i] = ' ';
+  for (char & i : line) {
+    if (i != 'O' && i != 'X' && i != 'E') {
+      i = ' ';
     }
   }
 
-  for (size_t i = line.size(); i < game::kXs; i++) {
+  for (size_t i = line.size(); i < supersquareboy::kXs; i++) {
     line.push_back(' ');
   }
 }
@@ -95,7 +95,7 @@ std::vector<Location> Frame::GetCharsNearPlayerX(char ch) {
     }
 
     if (level_grid_[x_frame_start_ + kPlayerOffset][y] == 'E') {
-      end_reached_ = true;  // keep working on this******************
+      end_reached_ = true;
     }
 
     if (level_grid_[x_frame_start_ + kPlayerOffset + 1][y] == ch) {

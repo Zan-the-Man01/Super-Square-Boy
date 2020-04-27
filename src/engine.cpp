@@ -5,7 +5,7 @@
 #include <game/engine.h>
 #include <game/location.h>
 
-namespace game {
+namespace supersquareboy {
 
 Engine::Engine() = default;
 
@@ -21,17 +21,21 @@ void Engine::Step() {
   bool spike_below = ItemBelowPlayer(spike_locs);
 
   if (!square_below && !spike_below) {
-    if (player_square_.TurnsRising() == 0) {
+    if (player_square_.GetTurnsRising() == 0) {
       player_square_.Fall();
     } else {
       player_square_.Rise();
 
-      if (player_square_.TurnsRising() >= 3) player_square_.StopRising();
+      if (player_square_.GetTurnsRising() >= kJumpHeight) {
+        player_square_.StopRising();
+      }
     }
   } else if (attempt_jump_) {
     player_square_.Rise();
   }
 
+  // since the player is always moving forward, if there is an item in front
+  // it will result in death
   if (!ItemInFrontOfPlayer(square_locs) &&
       !ItemInFrontOfPlayer(spike_locs) &&
       !spike_below) {
@@ -56,15 +60,16 @@ Frame Engine::GetFrame() const {
   return frame_;
 }
 
-bool Engine::ItemBelowPlayer(const std::vector<Location>& item_locs) {
+bool Engine::ItemBelowPlayer(const std::vector<Location>& item_locs) const {
   return IsItemToDirection(item_locs, kBelow);
 }
 
-bool Engine::ItemInFrontOfPlayer(const std::vector<Location>& item_locs) {
+bool Engine::ItemInFrontOfPlayer(const std::vector<Location>& item_locs) const {
   return IsItemToDirection(item_locs, kRight);
 }
 
-bool Engine::IsItemToDirection(const std::vector<Location>& item_locs, Location direction) {
+bool Engine::IsItemToDirection(const std::vector<Location>& item_locs,
+    Location direction) const {
   Location player_loc = player_square_.GetLocation();
   Location valid_loc = player_loc + direction;
 

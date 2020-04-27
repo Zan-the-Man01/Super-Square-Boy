@@ -4,7 +4,7 @@
 
 #include <game/player.h>
 
-namespace game {
+namespace supersquareboy {
 
 Player::Player() :
     loc_{0, 0}{}
@@ -16,7 +16,7 @@ Player::Player(size_t x, size_t y) :
 Player::Player(Location loc) :
     loc_(loc){}
 
-Location Player::GetLocation() {
+Location Player::GetLocation() const {
   return loc_;
 }
 
@@ -33,7 +33,7 @@ void Player::Rise() {
   turns_rising_++;
 }
 
-size_t Player::TurnsRising() {
+size_t Player::GetTurnsRising() {
   return turns_rising_;
 }
 

@@ -52,3 +52,5 @@
     
 - **TODO**
     - Make levels
+    - Add markdown file to ./docs that describes the format of level files (maybe?)
+    

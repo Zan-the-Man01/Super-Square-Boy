@@ -14,7 +14,7 @@
 
 #include <chrono>
 
-namespace supersquareboy {
+namespace ssbapp {
 
 using cinder::Color;
 using cinder::ColorA;
@@ -23,7 +23,7 @@ using cinder::TextBox;
 using std::chrono::duration_cast;
 using std::chrono::seconds;
 using std::chrono::system_clock;
-using game::Location;
+using supersquareboy::Location;
 
 using cinder::app::KeyEvent;
 

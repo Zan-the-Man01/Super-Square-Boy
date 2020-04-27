@@ -8,7 +8,7 @@
 #include <cinder/audio/audio.h>
 #include <game/engine.h>
 
-namespace supersquareboy {
+namespace ssbapp {
 
 /**
  * Class that plays the game Super Square Boy.
@@ -166,7 +166,7 @@ class SuperSquareBoy : public cinder::app::App {
 
  private:
   /** The engine that plays a level of the game. */
-  game::Engine engine_;
+  supersquareboy::Engine engine_;
 
   /** The size of a tile. */
   const size_t tile_size_;

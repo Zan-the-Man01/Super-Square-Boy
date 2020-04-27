@@ -9,7 +9,7 @@
 
 #include "frame.h"
 
-namespace game {
+namespace supersquareboy {
 
 /**
  * Stores information and executes commands relating to the player of Super
@@ -43,7 +43,7 @@ class Player {
    *
    * @return the location of the player.
    */
-  Location GetLocation();
+  Location GetLocation() const;
 
   /**
    * Causes the player to stop rising.
@@ -65,7 +65,7 @@ class Player {
    *
    * @return the number of turns the player has been rising.
    */
-  size_t TurnsRising();
+  size_t GetTurnsRising();
 
   /**
    * Resets the state of the player.

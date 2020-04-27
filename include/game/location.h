@@ -8,7 +8,7 @@
 #include <cstddef>
 #include <iostream>
 
-namespace game {
+namespace supersquareboy {
 
 // Represents a location on the board.
 class Location {

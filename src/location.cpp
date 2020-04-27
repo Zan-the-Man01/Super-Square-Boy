@@ -4,7 +4,7 @@
 
 #include <game/location.h>
 
-namespace game {
+namespace supersquareboy {
 
 Location::Location(int x, int y) : X_(x), Y_(y) {}
 

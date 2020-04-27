@@ -11,7 +11,7 @@
 #include <fstream>
 #include <vector>
 
-namespace game {
+namespace supersquareboy {
 /** The number of xs in the frame. */
 const size_t kXs = 26;
 

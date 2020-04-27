@@ -10,7 +10,7 @@ using cinder::app::App;
 using cinder::app::RendererGl;
 
 
-namespace supersquareboy {
+namespace ssbapp {
 
 const int kSamples = 8;
 const int kWidth = 1200;
@@ -25,6 +25,6 @@ void SetUp(App::Settings* settings) {
 
 
 // This is a macro that runs the application.
-CINDER_APP(supersquareboy::SuperSquareBoy,
-           RendererGl(RendererGl::Options().msaa(supersquareboy::kSamples)),
-           supersquareboy::SetUp)
+CINDER_APP(ssbapp::SuperSquareBoy,
+           RendererGl(RendererGl::Options().msaa(ssbapp::kSamples)),
+           ssbapp::SetUp)

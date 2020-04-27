@@ -12,7 +12,7 @@
 #include <fstream>
 #include <vector>
 
-namespace game {
+namespace supersquareboy {
 
 /**
  * Engine that plays a level of Super Square Boy
@@ -63,7 +63,7 @@ class Engine {
    * @param item_locs the locations of the items.
    * @return true if there is an item below the player, else false.
    */
-  bool ItemBelowPlayer(const std::vector<Location>& item_locs);
+  bool ItemBelowPlayer(const std::vector<Location>& item_locs) const;
 
   /**
    * Checks if one of the items contained in the specified vector is in front of
@@ -72,7 +72,7 @@ class Engine {
    * @param item_locs the locations of the items.
    * @return true if there is an item in front of the player, else false.
    */
-  bool ItemInFrontOfPlayer(const std::vector<Location>& item_locs);
+  bool ItemInFrontOfPlayer(const std::vector<Location>& item_locs) const;
 
   /**
    * Attempts to make the player jump.
@@ -98,8 +98,6 @@ class Engine {
    */
   bool EndReached() const;
 
-  size_t GetNumAttempts() const;
-
  private:
 
   /**
@@ -110,9 +108,13 @@ class Engine {
    * @param direction the direction to check.
    * @return true if there is an item in the direction, else false.
    */
-  bool IsItemToDirection(const std::vector<Location>& item_locs, Location direction);
+  bool IsItemToDirection(const std::vector<Location>& item_locs, Location direction) const;
 
  private:
+
+  /** The maximum height the player can jump. */
+  const size_t kJumpHeight = 3;
+
   /** The names of the files containing the levels. */
   const std::vector<std::string> levels_ = {"level1.txt", "level2.txt"};
 
