@@ -20,7 +20,20 @@ void Engine::Step() {
   bool square_below = ItemBelowPlayer(square_locs);
   bool spike_below = ItemBelowPlayer(spike_locs);
 
-  if (!square_below && !spike_below) {
+  if (player_square_.GetTurnsRising() == 0 && !square_below) {
+    player_square_.Fall();
+  } else if (player_square_.GetTurnsRising() > 0) {
+    player_square_.Rise();
+  } else if (attempt_jump_) {
+    player_square_.Rise();
+  }
+
+  if (player_square_.GetTurnsRising() >= kJumpHeight) {
+    player_square_.StopRising();
+  }
+
+
+  /*if (!square_below) {
     if (player_square_.GetTurnsRising() == 0) {
       player_square_.Fall();
     } else {
@@ -32,13 +45,13 @@ void Engine::Step() {
     }
   } else if (attempt_jump_) {
     player_square_.Rise();
-  }
+  }*/
 
   // since the player is always moving forward, if there is an item in front
   // it will result in death
   if (!ItemInFrontOfPlayer(square_locs) &&
       !ItemInFrontOfPlayer(spike_locs) &&
-      !spike_below) {
+      (!(spike_below && player_square_.GetTurnsRising() == 0))) {
     frame_.FrameStep();
   } else {
     dead_ = true;

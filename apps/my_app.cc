@@ -146,6 +146,7 @@ void SuperSquareBoy::update() {
     return;
   }
 
+
   const auto time = system_clock::now();
   if (!end_reached_ && engine_.EndReached()) {
     time_of_end_reached_ = time;
@@ -162,6 +163,7 @@ void SuperSquareBoy::update() {
   }
 
   if (time - last_time_ > std::chrono::milliseconds(speed_)) {
+    frame_count_++;
     engine_.Step();
     last_time_ = time;
   }
@@ -227,6 +229,7 @@ void SuperSquareBoy::draw() {
       just_reset_ = true;
       just_died_ = true;
       num_attempts++;
+      frame_count_ = 4;
     }
   }
 
@@ -390,7 +393,9 @@ void SuperSquareBoy::DrawAttemptsCounter() const {
   const Color color = FadedColor(player_colors[0]);
   const float y_offset = 300;
 
-  PrintText("ATTEMPT " + std::to_string(num_attempts), color, size,
+  /*PrintText("ATTEMPT " + std::to_string(num_attempts), color, size,
+            {center.x, center.y - y_offset}, 80);*/
+  PrintText("FRAME " + std::to_string(frame_count_), color, size,
             {center.x, center.y - y_offset}, 80);
 }
 

@@ -227,6 +227,8 @@ class SuperSquareBoy : public cinder::app::App {
 
   /** The number of attempts on the current level. */
   size_t num_attempts = 1;
+
+  size_t frame_count_ = 4;
 };
 
 }  // namespace myapp
