@@ -42,3 +42,5 @@
     - Add documentation to engine.h
     - Add documentation to frame.h
     - Replace Row/Col system with X/Y
+    - Change PlayerSquare to Player
+    - Add documentation to player.h

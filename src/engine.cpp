@@ -49,7 +49,7 @@ void Engine::Reset() {
   dead_ = false;
 }
 
-PlayerSquare Engine::GetPlayerSquare() const {
+Player Engine::GetPlayerSquare() const {
   return playerSquare;
 }
 

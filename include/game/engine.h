@@ -5,11 +5,12 @@
 #ifndef FINALPROJECT_ENGINE_H
 #define FINALPROJECT_ENGINE_H
 
-#include <game/location.h>
 #include <game/frame.h>
-#include <game/player-square.h>
-#include <vector>
+#include <game/location.h>
+#include <game/player.h>
+
 #include <fstream>
+#include <vector>
 
 namespace game {
 
@@ -46,7 +47,7 @@ class Engine {
    *
    * @return the player.
    */
-  PlayerSquare GetPlayerSquare() const;
+  Player GetPlayerSquare() const;
 
   /**
    * Gets the frame object.
@@ -123,7 +124,7 @@ class Engine {
   Frame frame_;
 
   /** The player. */
-  PlayerSquare playerSquare;
+  Player playerSquare;
 
   /** If the player is attempting to jump. */
   bool attempt_jump_ = false;
