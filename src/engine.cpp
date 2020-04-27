@@ -9,8 +9,8 @@ namespace game {
 
 Engine::Engine() = default;
 
-void Engine::StartLevel(size_t map_number) {
-  frame_.SetFrame(maps_[map_number - 1]);
+void Engine::StartLevel(size_t level_number) {
+  frame_.SetFrame(levels_[level_number - 1]);
   Reset();
 }
 
@@ -57,19 +57,19 @@ Frame Engine::GetFrame() const {
   return frame_;
 }
 
-bool Engine::ItemBelowPlayer(const std::vector<Location>& square_locs) {
-  return IsSquareToDirection(square_locs, kBelow);
+bool Engine::ItemBelowPlayer(const std::vector<Location>& item_locs) {
+  return IsItemToDirection(item_locs, kBelow);
 }
 
-bool Engine::ItemInFrontOfPlayer(const std::vector<Location>& square_locs) {
-  return IsSquareToDirection(square_locs, kRight);
+bool Engine::ItemInFrontOfPlayer(const std::vector<Location>& item_locs) {
+  return IsItemToDirection(item_locs, kRight);
 }
 
-bool Engine::IsSquareToDirection(const std::vector<Location>& square_locs, Location direction) {
+bool Engine::IsItemToDirection(const std::vector<Location>& item_locs, Location direction) {
   Location player_loc = playerSquare.GetLocation();
   Location valid_loc = player_loc + direction;
 
-  for (Location loc : square_locs) {
+  for (Location loc : item_locs) {
     if (loc == valid_loc) {
       return true;
     }

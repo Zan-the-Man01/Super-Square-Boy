@@ -33,9 +33,10 @@
 
 - **4/26/20**
     - Improve pause animation
-    - Add documentation
+    - Start adding documentation
     - Add menu music
     - Implement music reset on death
     - Add death sound effect
     - Add level select screen
     - Add credits screen
+    - Add documentation to engine.h
