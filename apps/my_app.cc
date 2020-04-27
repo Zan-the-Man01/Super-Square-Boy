@@ -238,10 +238,10 @@ void MyApp::DrawPlayer() const {
   }
 
   const Location loc = engine_.GetPlayerSquare().GetLocation();
-  cinder::gl::drawSolidRect(Rectf(tile_size_ * loc.Row(),
-                                  tile_size_ * loc.Col(),
-                                  tile_size_ * loc.Row() + tile_size_,
-                                  tile_size_ * loc.Col() + tile_size_));
+  cinder::gl::drawSolidRect(Rectf(tile_size_ * loc.X(),
+                                  tile_size_ * loc.Y(),
+                                  tile_size_ * loc.X() + tile_size_,
+                                  tile_size_ * loc.Y() + tile_size_));
 }
 
 void MyApp::DrawSquares() const {
@@ -249,10 +249,10 @@ void MyApp::DrawSquares() const {
   const std::vector<Location> locs = engine_.GetFrame().GetSquareLocs();
 
   for (const auto& loc : locs) {
-    cinder::gl::drawSolidRect(Rectf(tile_size_ * loc.Row(),
-                                    tile_size_ * loc.Col(),
-                                    tile_size_ * loc.Row() + tile_size_,
-                                    tile_size_ * loc.Col() + tile_size_));
+    cinder::gl::drawSolidRect(Rectf(tile_size_ * loc.X(),
+                                    tile_size_ * loc.Y(),
+                                    tile_size_ * loc.X() + tile_size_,
+                                    tile_size_ * loc.Y() + tile_size_));
   }
 }
 
@@ -261,10 +261,10 @@ void MyApp::DrawSpikes() const {
   const std::vector<Location> locs = engine_.GetFrame().GetSpikeLocs();
 
   for (const auto& loc : locs) {
-    cinder::gl::drawSolidRect(Rectf(tile_size_ * loc.Row(),
-                                    tile_size_ * loc.Col(),
-                                    tile_size_ * loc.Row() + tile_size_,
-                                    tile_size_ * loc.Col() + tile_size_));
+    cinder::gl::drawSolidRect(Rectf(tile_size_ * loc.X(),
+                                    tile_size_ * loc.Y(),
+                                    tile_size_ * loc.X() + tile_size_,
+                                    tile_size_ * loc.Y() + tile_size_));
   }
 }
 

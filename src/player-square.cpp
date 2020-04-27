@@ -9,8 +9,8 @@ namespace game {
 PlayerSquare::PlayerSquare() :
     loc_{0, 0}{}
 
-PlayerSquare::PlayerSquare(size_t row, size_t col) :
-    loc_{Location(row, col)} {
+PlayerSquare::PlayerSquare(size_t x, size_t y) :
+    loc_{Location(x, y)} {
 }
 
 PlayerSquare::PlayerSquare(Location loc) :
@@ -25,11 +25,11 @@ void PlayerSquare::StopRising() {
 }
 
 void PlayerSquare::Fall() {
-  loc_ = Location(loc_.Row(), loc_.Col() + 1);
+  loc_ = Location(loc_.X(), loc_.Y() + 1);
 }
 
 void PlayerSquare::Rise() {
-  loc_ = Location(loc_.Row(), loc_.Col() - 1);
+  loc_ = Location(loc_.X(), loc_.Y() - 1);
   turns_rising_++;
 }
 

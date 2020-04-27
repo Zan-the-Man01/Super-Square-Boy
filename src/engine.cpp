@@ -15,8 +15,8 @@ void Engine::StartLevel(size_t level_number) {
 }
 
 void Engine::Step() {
-  std::vector<Location> square_locs = frame_.GetSquaresNearPlayerCol();
-  std::vector<Location> spike_locs = frame_.GetSpikesNearPlayerCol();
+  std::vector<Location> square_locs = frame_.GetSquaresNearPlayerX();
+  std::vector<Location> spike_locs = frame_.GetSpikesNearPlayerX();
   bool square_below = ItemBelowPlayer(square_locs);
   bool spike_below = ItemBelowPlayer(spike_locs);
 

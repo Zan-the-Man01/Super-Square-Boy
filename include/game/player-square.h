@@ -14,7 +14,7 @@ namespace game {
 class PlayerSquare {
  public:
   PlayerSquare();
-  PlayerSquare(size_t row, size_t col);
+  PlayerSquare(size_t x, size_t y);
   PlayerSquare(Location loc);
   Location GetLocation();
   void Jump();
@@ -25,7 +25,7 @@ class PlayerSquare {
   void Reset();
 
  private:
-  const Location kPlayerStartLoc = Location(4, kCols - 1);
+  const Location kPlayerStartLoc = Location(4, kX - 1);
   Location loc_;
   size_t turns_rising_ = 0;
 };

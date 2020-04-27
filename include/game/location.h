@@ -13,7 +13,7 @@ namespace game {
 // Represents a location on the board.
 class Location {
  public:
-  Location(int row, int col);
+  Location(int x, int y);
 
   // Comparison operators.
   bool operator()(const Location& lhs, const Location& rhs) const;
@@ -33,12 +33,12 @@ class Location {
   Location operator-() const;
 
   // Accessors.
-  int Row() const;
-  int Col() const;
+  int X() const;
+  int Y() const;
 
  private:
-  int row_;
-  int col_;
+  int X_;
+  int Y_;
 };
 
 std::ostream& operator<<(std::ostream& os, const Location& location);

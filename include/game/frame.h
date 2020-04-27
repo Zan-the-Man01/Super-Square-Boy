@@ -12,11 +12,11 @@
 #include <vector>
 
 namespace game {
-/** The number of rows in the frame. */
-const size_t kRows = 26;
+/** The number of xs in the frame. */
+const size_t kXs = 26;
 
 /** The number of columns in the frame. */
-const size_t kCols = 16;
+const size_t kX = 16;
 
 /**
  * Stores a Super Square Boy level and manipulates the frame of play.
@@ -62,7 +62,7 @@ class Frame {
    *
    * @return a vector containing the locations of the squares.
    */
-  std::vector<Location> GetSquaresNearPlayerCol();
+  std::vector<Location> GetSquaresNearPlayerX();
 
   /**
    * Gets the locations of the spikes in the same column as the player, or one
@@ -70,7 +70,7 @@ class Frame {
    *
    * @return a vector containing the locations of the spikes.
    */
-  std::vector<Location> GetSpikesNearPlayerCol();
+  std::vector<Location> GetSpikesNearPlayerX();
 
   /**
    * Steps forward in the frame.
@@ -113,7 +113,7 @@ class Frame {
    * @param ch the character to search for.
    * @return a vector containing the locations of the characters.
    */
-  std::vector<Location> GetCharsNearPlayerCol(char ch);
+  std::vector<Location> GetCharsNearPlayerX(char ch);
 
  private:
 
@@ -121,7 +121,7 @@ class Frame {
   std::vector<std::string> level_grid_;
 
   /** The starting position of the current frame. */
-  size_t row_frame_start_ = 0;
+  size_t x_frame_start_ = 0;
 
   /** If the end has been reached. */
   bool end_reached_ = false;
