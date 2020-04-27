@@ -39,5 +39,6 @@ size_t Player::GetTurnsRising() {
 
 void Player::Reset() {
   loc_ = kPlayerStartLoc;
+  turns_rising_ = 0;
 }
 }

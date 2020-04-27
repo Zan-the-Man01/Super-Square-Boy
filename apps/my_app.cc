@@ -32,11 +32,13 @@ const std::string kNormalFont = "Azonix";
 const std::vector<Color> player_colors = {Color(1, 0.501, 0)};
 const std::vector<Color> backgr_colors = {Color(0, 0.933, 0.921),
                                           Color(0, 0.933, 0.921),
-                                          Color(0.72941, 0.45098, 1)};
+                                          Color(0.72941, 0.45098, 1),
+                                          Color(0.30588, 0.87451, 0.57255),
+                                          Color(1, 1, 0.5451)};
 const double kPauseScreenPrintTime = 0.0075;
 const double kAnimationEndTime = 0.01092;
-const int kEndMusicPos = 3;
-const int kDeathSoundPos = 4;
+const int kEndMusicPos = 5;
+const int kDeathSoundPos = 6;
 
 SuperSquareBoy::SuperSquareBoy() : speed_{50}, tile_size_{40} {}
 
@@ -91,6 +93,14 @@ void SuperSquareBoy::SetUpSound() {
 
     sourceFile =
         cinder::audio::load(cinder::app::loadAsset("music2.mp3"));
+    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
+
+    sourceFile =
+        cinder::audio::load(cinder::app::loadAsset("music3.mp3"));
+    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
+
+    sourceFile =
+        cinder::audio::load(cinder::app::loadAsset("music4.mp3"));
     sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
 
     sourceFile =
@@ -329,6 +339,10 @@ void SuperSquareBoy::DrawLevelSelect() const {
   PrintText("1: LEVEL ONE", color, size, center, 50);
   PrintText("2: LEVEL TWO", color, size,
             {center.x, center.y + small_y_offset}, 50);
+  PrintText("3: LEVEL THREE", color, size,
+            {center.x, center.y + (2 * small_y_offset)}, 50);
+  PrintText("4: LEVEL FOUR", color, size,
+            {center.x, center.y + (3 * small_y_offset)}, 50);
   PrintText("[ESC]: BACK", color, size,
             {center.x - left_x_offset, center.y + (7.5 * esc_y_offset)}, 30);
 }
@@ -413,11 +427,23 @@ void SuperSquareBoy::keyDown(KeyEvent event) {
       } else if (paused_) {
         Reset();
       }
+
       break;
     }
     case KeyEvent::KEY_3: {
       if (in_main_menu_) {
         exit(0);
+      }
+
+      if (in_level_select_) {
+        SelectLevel(3);
+      }
+
+      break;
+    }
+    case KeyEvent::KEY_4: {
+      if (in_level_select_) {
+        SelectLevel(4);
       }
 
       break;
@@ -497,6 +523,7 @@ void SuperSquareBoy::Reset() {
   animation_started_ = false;
   engine_.Reset();
   StartMusic(0);
+  num_attempts = 1;
 }
 
 void SuperSquareBoy::Pause() {

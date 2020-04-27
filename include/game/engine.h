@@ -116,7 +116,8 @@ class Engine {
   const size_t kJumpHeight = 3;
 
   /** The names of the files containing the levels. */
-  const std::vector<std::string> levels_ = {"level1.txt", "level2.txt"};
+  const std::vector<std::string> levels_ = {
+      "level1.txt", "level2.txt", "level3.txt", "level4.txt"};
 
   /** Added to another location, this will give the location below. */
   const Location kBelow = Location(0, 1);
