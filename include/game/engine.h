@@ -32,31 +32,31 @@ class Engine {
   void StartLevel(size_t level_number);
 
   /**
-   * Reset the state of the engine to the start of the level.
+   * Resets the state of the engine to the start of the level.
    */
   void Reset();
 
   /**
-   * Make a timestep of one frame.
+   * Makes a timestep of one frame.
    */
   void Step();
 
   /**
-   * Get the player object.
+   * Gets the player object.
    *
    * @return the player.
    */
   PlayerSquare GetPlayerSquare() const;
 
   /**
-   * Get the frame object.
+   * Gets the frame object.
    *
    * @return the frame.
    */
   Frame GetFrame() const;
 
   /**
-   * Check if one of the items contained in the specified vector is below the
+   * Checks if one of the items contained in the specified vector is below the
    * player.
    *
    * @param item_locs the locations of the items.
@@ -65,7 +65,7 @@ class Engine {
   bool ItemBelowPlayer(const std::vector<Location>& item_locs);
 
   /**
-   * Check if one of the items contained in the specified vector is in front of
+   * Checks if one of the items contained in the specified vector is in front of
    * the player.
    *
    * @param item_locs the locations of the items.
@@ -74,12 +74,12 @@ class Engine {
   bool ItemInFrontOfPlayer(const std::vector<Location>& item_locs);
 
   /**
-   * Attempt to make the player jump.
+   * Attempts to make the player jump.
    */
   void AttemptJump();
 
   /**
-   * Stop attempting to jump.
+   * Stops attempting to jump.
    */
   void DontJump();
 
@@ -100,7 +100,7 @@ class Engine {
  private:
 
   /**
-   * Check if one of the items contained in the specified vector is in the
+   * Checks if one of the items contained in the specified vector is in the
    * specified direction of the player.
    *
    * @param item_locs the locations of the items.

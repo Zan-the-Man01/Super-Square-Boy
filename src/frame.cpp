@@ -11,27 +11,27 @@ namespace game {
 Frame::Frame() {
 }
 
-Frame::Frame(const std::string& map_path){
-  std::ifstream map(cinder::app::getAssetPath(map_path));
+Frame::Frame(const std::string& level_path){
+  std::ifstream map(cinder::app::getAssetPath(level_path));
   while (!map.eof()) {
     std::string temp;
     std::getline(map, temp);
     FillLine(temp);
 
-    grid_.push_back(temp);
+    level_grid_.push_back(temp);
   }
 }
 
 
-void Frame::SetFrame(const std::string& map_path) {
-  grid_.clear();
-  std::ifstream map(cinder::app::getAssetPath(map_path));
+void Frame::SetFrame(const std::string& level_path) {
+  level_grid_.clear();
+  std::ifstream map(cinder::app::getAssetPath(level_path));
   while (!map.eof()) {
     std::string temp;
     std::getline(map, temp);
     FillLine(temp);
 
-    grid_.push_back(temp);
+    level_grid_.push_back(temp);
   }
 }
 
@@ -74,9 +74,9 @@ void Frame::FillLine(std::string& line) {
 
 std::vector<Location> Frame::GetCharLocs(char ch) {
   std::vector<Location> square_locs;
-  for (size_t row = row_frame_start_; row < std::min(grid_.size(), kRows + row_frame_start_); row++) {
+  for (size_t row = row_frame_start_; row < std::min(level_grid_.size(), kRows + row_frame_start_); row++) {
     for (size_t col = 0; col < kCols; col++) {
-      if (grid_[row][col] == ch) {
+      if (level_grid_[row][col] == ch) {
         square_locs.emplace_back(row - row_frame_start_, kCols - col);
       }
     }
@@ -90,15 +90,15 @@ std::vector<Location> Frame::GetCharsNearPlayerCol(char ch) {
 
   std::vector<Location> square_locs;
   for (size_t col = 0; col < kCols; col++) {
-    if (grid_[row_frame_start_ + kPlayerOffset][col] == ch) {
+    if (level_grid_[row_frame_start_ + kPlayerOffset][col] == ch) {
       square_locs.emplace_back(kPlayerOffset, kCols - col);
     }
 
-    if (grid_[row_frame_start_ + kPlayerOffset][col] == 'E') {
+    if (level_grid_[row_frame_start_ + kPlayerOffset][col] == 'E') {
       end_reached_ = true;  // keep working on this******************
     }
 
-    if (grid_[row_frame_start_ + kPlayerOffset + 1][col] == ch) {
+    if (level_grid_[row_frame_start_ + kPlayerOffset + 1][col] == ch) {
       square_locs.emplace_back(kPlayerOffset + 1, kCols - col);
     }
   }
