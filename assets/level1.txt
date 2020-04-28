@@ -646,7 +646,7 @@ O
 O
 O
 O
-OX
+O
 OX
 OX
 OX
@@ -686,7 +686,7 @@ O
 O
 O
 O
-OX
+O
 OX
 OX
 OX
