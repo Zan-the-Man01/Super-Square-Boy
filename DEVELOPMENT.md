@@ -50,6 +50,8 @@
     - Add proper music for levels 1 and 2
     - Fix things mentioned in feedback
     - Add placeholder levels 3 and 4
+    - Start work on level 1
+    - Finish level 1
     
 - **TODO**
     - Make levels

@@ -393,10 +393,10 @@ void SuperSquareBoy::DrawAttemptsCounter() const {
   const Color color = FadedColor(player_colors[0]);
   const float y_offset = 300;
 
-  /*PrintText("ATTEMPT " + std::to_string(num_attempts), color, size,
-            {center.x, center.y - y_offset}, 80);*/
-  PrintText("FRAME " + std::to_string(frame_count_), color, size,
+  PrintText("ATTEMPT " + std::to_string(num_attempts), color, size,
             {center.x, center.y - y_offset}, 80);
+  /*PrintText("FRAME " + std::to_string(frame_count_), color, size,
+            {center.x, center.y - y_offset}, 80);*/
 }
 
 void SuperSquareBoy::SelectLevel(int level_num) {
