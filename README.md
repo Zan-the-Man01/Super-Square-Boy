@@ -30,9 +30,16 @@ Running Super Square Boy will require:
 - Build and run the project from CLion
 
 ### How To Play
+Controls
+
+| Key        | Action          |
+|:----------:|:---------------:|
+| Up / Space | Jump            |
+| ESC        | Pause / Unpause |
+| 1-4        | Select Option   |
 - To navigate the menu, press the number of the key corresponding to the option you want to select
 - Once you start a level, press the up arrow or space bar to jump
-- If you want to pause the game, press the escape key
+- If you want to pause or unpause the game, press the escape key
 
 ### Music
 - **Main Menu**: Away With the Fairies by Philanthrope
