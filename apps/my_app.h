@@ -16,8 +16,12 @@ namespace ssbapp {
 class SuperSquareBoy : public cinder::app::App {
  public:
 
-  enum class state {
-    // put stuff here
+  enum class GameState {
+    MainMenu,
+    LevelSelect,
+    CreditsScreen,
+    Paused,
+    Playing
   };
 
   /**
@@ -201,17 +205,8 @@ class SuperSquareBoy : public cinder::app::App {
   /** If the player has reached the end. */
   bool end_reached_ = false;
 
-  /** If the game is paused. */
-  bool paused_ = false;
-
-  /** If the player is in the main menu. */
-  bool in_main_menu_ = true;
-
-  /** If the player is in the level select menu. */
-  bool in_level_select_ = false;
-
-  /** If the player is in the credits screen. */
-  bool in_credits_screen_ = false;
+  /** The state of the game. */
+  GameState state_ = GameState::MainMenu;
 
   /** If the animation has started. */
   bool animation_started_ = false;

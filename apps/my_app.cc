@@ -121,7 +121,10 @@ void SuperSquareBoy::update() {
     anim_time_ += 0.0001;
   }
 
-  if (in_main_menu_ || paused_ || in_level_select_ || in_credits_screen_) {
+  if (state_ == GameState::MainMenu ||
+      state_ == GameState::Paused ||
+      state_ == GameState::LevelSelect ||
+      state_ == GameState::CreditsScreen) {
     return;
   }
 
@@ -153,22 +156,22 @@ void SuperSquareBoy::update() {
 }
 
 void SuperSquareBoy::draw() {
-  if (in_main_menu_) {
+  if (state_ == GameState::MainMenu) {
     DrawMainMenu();
     return;
   }
 
-  if (in_level_select_) {
+  if (state_ == GameState::LevelSelect) {
     DrawLevelSelect();
     return;
   }
 
-  if (in_credits_screen_) {
+  if (state_ == GameState::CreditsScreen) {
     DrawCreditsScreen();
     return;
   }
 
-  if (paused_) {
+  if (state_ == GameState::Paused) {
     if (!animation_started_) {
       animation_started_ = true;
       anim_time_ = 0;
@@ -379,9 +382,8 @@ void SuperSquareBoy::DrawAttemptsCounter() const {
 
 void SuperSquareBoy::SelectLevel(int level_num) {
   current_level_ = level_num;
-  in_level_select_ = false;
+  state_ = GameState::Playing;
   engine_.StartLevel(current_level_);
-  paused_ = false;
   animation_started_ = false;
   anim_time_ = 0;
   SetUpAnimation();
@@ -390,42 +392,40 @@ void SuperSquareBoy::SelectLevel(int level_num) {
 void SuperSquareBoy::keyDown(KeyEvent event) {
   switch (event.getCode()) {
     case KeyEvent::KEY_1: {
-      if (in_main_menu_) {
-        in_main_menu_ = false;
-        in_level_select_ = true;
-      } else if (in_level_select_) {
+      if (state_ == GameState::MainMenu) {
+        state_ = GameState::LevelSelect;
+      } else if (state_ == GameState::LevelSelect) {
         SelectLevel(1);
-      } else if (paused_) {
+      } else if (state_ == GameState::Paused) {
         Unpause();
       }
 
       break;
     }
     case KeyEvent::KEY_2: {
-      if (in_main_menu_) {
-        in_main_menu_ = false;
-        in_credits_screen_ = true;
-      } else if (in_level_select_) {
+      if (state_ == GameState::MainMenu) {
+        state_ = GameState::CreditsScreen;
+      } else if (state_ == GameState::LevelSelect) {
         SelectLevel(2);
-      } else if (paused_) {
+      } else if (state_ == GameState::Paused) {
         Reset();
       }
 
       break;
     }
     case KeyEvent::KEY_3: {
-      if (in_main_menu_) {
+      if (state_ == GameState::MainMenu) {
         exit(0);
       }
 
-      if (in_level_select_) {
+      if (state_ == GameState::LevelSelect) {
         SelectLevel(3);
       }
 
       break;
     }
     case KeyEvent::KEY_4: {
-      if (in_level_select_) {
+      if (state_ == GameState::LevelSelect) {
         SelectLevel(4);
       }
 
@@ -437,16 +437,11 @@ void SuperSquareBoy::keyDown(KeyEvent event) {
       break;
     }
     case KeyEvent::KEY_ESCAPE: {
-      if (in_level_select_) {
-        in_level_select_ = false;
-        in_main_menu_ = true;
-      } else if (in_credits_screen_) {
-        in_credits_screen_ = false;
-        in_main_menu_ = true;
+      if (state_ == GameState::LevelSelect || state_ == GameState::CreditsScreen) {
+        state_ = GameState::MainMenu;
       }
-
-      if (!in_main_menu_) {
-        if (paused_) {
+      if (state_ == GameState::Playing || state_ == GameState::Paused) {
+        if (state_ == GameState::Paused) {
           Unpause();
         } else {
           Pause();
@@ -499,11 +494,8 @@ void SuperSquareBoy::Reset() {
   just_died_ = true;
   just_reset_ = true;
   end_reached_ = false;
-  paused_ = false;
-  in_main_menu_ = true;
-  in_level_select_ = false;
-  in_credits_screen_ = false;
   animation_started_ = false;
+  state_ = GameState::MainMenu;
   engine_.Reset();
   StartMusic(0);
   num_attempts = 1;
@@ -511,14 +503,15 @@ void SuperSquareBoy::Reset() {
 
 void SuperSquareBoy::Pause() {
   sound_tracks_[current_level_]->pause();
-  paused_ = true;
+  //paused_ = true;
+  state_ = GameState::Paused;
   anim_time_ = 0;
   SetUpAnimation();
 }
 
 void SuperSquareBoy::Unpause() {
   sound_tracks_[current_level_]->start();
-  paused_ = false;
+  state_ = GameState::Playing;
   animation_started_ = false;
   anim_time_ = 0;
   SetUpAnimation();

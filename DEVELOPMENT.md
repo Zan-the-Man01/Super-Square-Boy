@@ -59,6 +59,7 @@
 
 - **4/28/20**
     - Finish level 2
+    - Change boolean based state system to an enum based one
     
 - **TODO**
     - Make levels
