@@ -32,7 +32,6 @@ const std::string kNormalFont = "Azonix";
 const std::vector<Color> player_colors = {Color(1, 0.501, 0)};
 const std::vector<Color> backgr_colors = {Color(0, 0.933, 0.921),
                                           Color(0, 0.933, 0.921),
-                                          //Color(0.72941, 0.45098, 1),
                                           Color(1, 0.61314, 1),
                                           Color(0.30588, 0.87451, 0.57255),
                                           Color(1, 1, 0.5451)};
@@ -84,35 +83,12 @@ void SuperSquareBoy::SetUpAnimation() {
 
 void SuperSquareBoy::SetUpSound() {
   try {
-    cinder::audio::SourceFileRef sourceFile =
-        cinder::audio::load(cinder::app::loadAsset("menu.mp3"));
-    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
+    cinder::audio::SourceFileRef sourceFile;
 
-    sourceFile =
-        cinder::audio::load(cinder::app::loadAsset("music1.mp3"));
-    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
-
-    sourceFile =
-        cinder::audio::load(cinder::app::loadAsset("music2.mp3"));
-    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
-
-    sourceFile =
-        cinder::audio::load(cinder::app::loadAsset("music3.mp3"));
-    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
-
-    sourceFile =
-        cinder::audio::load(cinder::app::loadAsset("music4.mp3"));
-    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
-
-    sourceFile =
-        cinder::audio::load(cinder::app::loadAsset("end.mp3"));
-    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
-
-    sourceFile =
-        cinder::audio::load(cinder::app::loadAsset("death.mp3"));
-    sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
-
-    // use vector with names of the files and loop through it
+    for (const std::string& sound : sounds_) {
+      sourceFile = cinder::audio::load(cinder::app::loadAsset(sound));
+      sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
+    }
 
     StartMusic(0);
   } catch (const std::exception& ex) {
@@ -556,4 +532,4 @@ void SuperSquareBoy::StartMusic(int level_num) {
   sound_tracks_[level_num]->start();
 }
 
-}  // namespace myapp
+}  // namespace ssbapp

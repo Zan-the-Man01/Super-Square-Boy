@@ -178,6 +178,11 @@ class SuperSquareBoy : public cinder::app::App {
   /** The speed of the game. */
   const size_t speed_;
 
+  /** The names of the files containing the music and audio. */
+  const std::vector<std::string> sounds_ = {
+      "menu.mp3", "music1.mp3", "music2.mp3", "music3.mp3", "music4.mp3",
+      "end.mp3", "death.mp3"};
+
   /** The last time the engine took a step. */
   std::chrono::time_point<std::chrono::system_clock> last_time_;
 
