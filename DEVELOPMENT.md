@@ -60,9 +60,5 @@
 - **4/28/20**
     - Finish level 2
     - Change boolean based state system to an enum based one
-    
-- **TODO**
-    - Make levels
-    - Add markdown file to ./docs that describes the format 
-      of level files (maybe?)
+    - Update readme file
     
