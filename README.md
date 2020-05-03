@@ -34,7 +34,7 @@ Controls
 
 | Key        | Action          |
 |:----------:|:---------------:|
-| Up / Space | Jump            |
+| Up / SPACE | Jump            |
 | ESC        | Pause / Unpause |
 | 1-4        | Select Option   |
 - To navigate the menu, press the number of the key corresponding to the option you want to select
