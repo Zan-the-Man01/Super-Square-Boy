@@ -54,9 +54,14 @@
     - Finish level 1
     
 - **4/28/20**
-    - Turn quadruple spike at end of level into triple spike to make slightly easier
+    - Turn quadruple spike at end of level 1 into triple spike 
+      to make slightly easier
+
+- **4/28/20**
+    - Finish level 2
     
 - **TODO**
     - Make levels
-    - Add markdown file to ./docs that describes the format of level files (maybe?)
+    - Add markdown file to ./docs that describes the format 
+      of level files (maybe?)
     

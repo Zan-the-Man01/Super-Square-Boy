@@ -16,6 +16,10 @@ namespace ssbapp {
 class SuperSquareBoy : public cinder::app::App {
  public:
 
+  enum class state {
+    // put stuff here
+  };
+
   /**
    * Default constructor.
    */

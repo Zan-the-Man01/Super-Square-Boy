@@ -32,7 +32,8 @@ const std::string kNormalFont = "Azonix";
 const std::vector<Color> player_colors = {Color(1, 0.501, 0)};
 const std::vector<Color> backgr_colors = {Color(0, 0.933, 0.921),
                                           Color(0, 0.933, 0.921),
-                                          Color(0.72941, 0.45098, 1),
+                                          //Color(0.72941, 0.45098, 1),
+                                          Color(1, 0.61314, 1),
                                           Color(0.30588, 0.87451, 0.57255),
                                           Color(1, 1, 0.5451)};
 const double kPauseScreenPrintTime = 0.0075;
@@ -111,6 +112,8 @@ void SuperSquareBoy::SetUpSound() {
         cinder::audio::load(cinder::app::loadAsset("death.mp3"));
     sound_tracks_.push_back(cinder::audio::Voice::create(sourceFile));
 
+    // use vector with names of the files and loop through it
+
     StartMusic(0);
   } catch (const std::exception& ex) {
     exit(1);
@@ -145,7 +148,6 @@ void SuperSquareBoy::update() {
   if (in_main_menu_ || paused_ || in_level_select_ || in_credits_screen_) {
     return;
   }
-
 
   const auto time = system_clock::now();
   if (!end_reached_ && engine_.EndReached()) {
