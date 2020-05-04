@@ -358,16 +358,16 @@ void SuperSquareBoy::DrawCreditsScreen() const {
   PrintText("MAIN MENU: 'AWAY WITH THE FAIRIES' - PHILANTHROPE", color, size,
             {center.x, center.y + (3 * small_y_offset)}, 40);
 
-  PrintText("LEVEL 1: RPM - ENV", color, size,
+  PrintText("LEVEL 1: 'RPM' - ENV", color, size,
             {center.x, center.y + (4 * small_y_offset)}, 40);
 
-  PrintText("LEVEL 2: DEEP BLUE - K-391", color, size,
+  PrintText("LEVEL 2: 'DEEP BLUE' - K-391", color, size,
             {center.x, center.y + (5 * small_y_offset)}, 40);
 
-  PrintText("LEVEL 3: LUMINOUS - LENSKO", color, size,
+  PrintText("LEVEL 3: 'LUMINOUS' - LENSKO", color, size,
             {center.x, center.y + (6 * small_y_offset)}, 40);
 
-  PrintText("LEVEL 4: [PLACEHOLDER] - [ARTIST]", color, size,
+  PrintText("LEVEL 4: 'SPECTRE' - ALAN WALKER", color, size,
             {center.x, center.y + (7 * small_y_offset)}, 40);
 
   PrintText("[ESC]: BACK", color, size,
