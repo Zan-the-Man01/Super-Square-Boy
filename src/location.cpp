@@ -1,6 +1,4 @@
-//
-// Created by alexm on 4/15/2020.
-//
+// Copyright (c) 2020 Alexander Marcozzi. All rights reserved.
 
 #include <game/location.h>
 
@@ -69,4 +67,4 @@ std::ostream& operator<<(std::ostream& os, const Location& location) {
   return os;
 }
 
-}  // namespace game
+}  // namespace supersquareboy

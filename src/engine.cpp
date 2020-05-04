@@ -1,6 +1,4 @@
-//
-// Created by alexm on 4/15/2020.
-//
+// Copyright (c) 2020 Alexander Marcozzi. All rights reserved.
 
 #include <game/engine.h>
 #include <game/location.h>
@@ -31,21 +29,6 @@ void Engine::Step() {
   if (player_square_.GetTurnsRising() >= kJumpHeight) {
     player_square_.StopRising();
   }
-
-
-  /*if (!square_below) {
-    if (player_square_.GetTurnsRising() == 0) {
-      player_square_.Fall();
-    } else {
-      player_square_.Rise();
-
-      if (player_square_.GetTurnsRising() >= kJumpHeight) {
-        player_square_.StopRising();
-      }
-    }
-  } else if (attempt_jump_) {
-    player_square_.Rise();
-  }*/
 
   // since the player is always moving forward, if there is an item in front
   // it will result in death
@@ -110,4 +93,5 @@ bool Engine::IsDead() const {
 bool Engine::EndReached() const {
   return frame_.EndReached();
 }
-}
+
+}  // namespace supersquareboy

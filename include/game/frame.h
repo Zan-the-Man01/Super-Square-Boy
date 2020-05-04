@@ -1,6 +1,4 @@
-//
-// Created by alexm on 4/16/2020.
-//
+// Copyright (c) 2020 Alexander Marcozzi. All rights reserved.
 
 #ifndef FINALPROJECT_FRAME_H
 #define FINALPROJECT_FRAME_H
@@ -127,6 +125,6 @@ class Frame {
   bool end_reached_ = false;
 };
 
-}  // namespace game
+}  // namespace supersquareboy
 
 #endif  // FINALPROJECT_FRAME_H

@@ -1,6 +1,4 @@
-//
-// Created by alexm on 4/16/2020.
-//
+// Copyright (c) 2020 Alexander Marcozzi. All rights reserved.
 
 #include <game/frame.h>
 #include <cinder/app/App.h>
@@ -110,4 +108,4 @@ bool Frame::EndReached() const {
   return end_reached_;
 }
 
-}
+}  // namespace supersquareboy

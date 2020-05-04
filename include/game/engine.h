@@ -1,6 +1,4 @@
-//
-// Created by alexm on 4/15/2020.
-//
+// Copyright (c) 2020 Alexander Marcozzi. All rights reserved.
 
 #ifndef FINALPROJECT_ENGINE_H
 #define FINALPROJECT_ENGINE_H
@@ -138,6 +136,6 @@ class Engine {
   bool dead_ = false;
 };
 
-}  // namespace game
+}  // namespace supersquareboy
 
 #endif  // FINALPROJECT_ENGINE_H

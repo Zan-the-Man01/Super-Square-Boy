@@ -1,6 +1,4 @@
-//
-// Created by alexm on 4/16/2020.
-//
+// Copyright (c) 2020 Alexander Marcozzi. All rights reserved.
 
 #include <game/player.h>
 
@@ -41,4 +39,5 @@ void Player::Reset() {
   loc_ = kPlayerStartLoc;
   turns_rising_ = 0;
 }
-}
+
+}  // namespace supersquareboy

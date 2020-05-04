@@ -1,6 +1,4 @@
-//
-// Created by alexm on 4/16/2020.
-//
+// Copyright (c) 2020 Alexander Marcozzi. All rights reserved.
 
 #ifndef FINALPROJECT_PLAYER_H
 #define FINALPROJECT_PLAYER_H
@@ -84,6 +82,6 @@ class Player {
   size_t turns_rising_ = 0;
 };
 
-}
+}  // namespace supersquareboy
 
 #endif  // FINALPROJECT_PLAYER_H

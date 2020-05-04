@@ -1,4 +1,4 @@
-// Copyright (c) 2020 CS126SP20. All rights reserved.
+// Copyright (c) 2020 Alexander Marcozzi. All rights reserved.
 
 #ifndef FINALPROJECT_APPS_MYAPP_H_
 #define FINALPROJECT_APPS_MYAPP_H_
@@ -232,9 +232,10 @@ class SuperSquareBoy : public cinder::app::App {
   /** The number of attempts on the current level. */
   size_t num_attempts = 1;
 
+  /** The current "frame" or position on the map. Used for testing levels. */
   size_t frame_count_ = 4;
 };
 
-}  // namespace myapp
+}  // namespace ssbapp
 
 #endif  // FINALPROJECT_APPS_MYAPP_H_

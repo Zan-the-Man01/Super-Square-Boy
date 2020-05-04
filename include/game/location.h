@@ -1,6 +1,4 @@
-//
-// Created by alexm on 4/15/2020.
-//
+// Copyright (c) 2020 Alexander Marcozzi. All rights reserved.
 
 #ifndef FINALPROJECT_LOCATION_H
 #define FINALPROJECT_LOCATION_H
@@ -43,6 +41,6 @@ class Location {
 
 std::ostream& operator<<(std::ostream& os, const Location& location);
 
-}  // namespace game
+}  // namespace supersquareboy
 
 #endif  // FINALPROJECT_LOCATION_H
