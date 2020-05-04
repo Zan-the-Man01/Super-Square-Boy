@@ -29,6 +29,10 @@ Running Super Square Boy will require:
 ```git clone https://github.com/CS126SP20/final-project-Zan-the-Man01.git```
 - Build and run the project from CLion
 
+### Documentation
+This codebase follows the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html) with Doxygen-style
+documentation. Learn more about Doxygen [here](http://www.doxygen.nl/).
+
 ### How To Play
 Controls
 
@@ -45,3 +49,4 @@ Controls
 - **Main Menu**: Away With the Fairies by Philanthrope
 - **Level 1**: Rpm by Env
 - **Level 2**: Deep Blue by K-391
+- **Level 3**: Luminous by Lensko

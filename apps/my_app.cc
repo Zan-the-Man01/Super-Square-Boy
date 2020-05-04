@@ -29,12 +29,17 @@ using cinder::app::KeyEvent;
 
 const seconds kCountdownTime = seconds(6);
 const std::string kNormalFont = "Azonix";
-const std::vector<Color> player_colors = {Color(1, 0.501, 0)};
+const std::vector<Color> player_colors = {Color(1, 0.501, 0),
+                                          Color(1, 0.501, 0),
+                                          Color(1, 0.501, 0),
+                                          Color(1, 0.501, 0),
+                                          Color(0, 0, 0)};
 const std::vector<Color> backgr_colors = {Color(0, 0.933, 0.921),
                                           Color(0, 0.933, 0.921),
                                           Color(1, 0.61314, 1),
-                                          Color(0.30588, 0.87451, 0.57255),
-                                          Color(1, 1, 0.5451)};
+                                          Color(1, 1, 0.5451),
+                                          //Color(0.30588, 0.87451, 0.57255),
+                                          Color(1, 1, 1)};
 const double kPauseScreenPrintTime = 0.0075;
 const double kAnimationEndTime = 0.01092;
 const int kEndMusicPos = 5;
@@ -188,7 +193,7 @@ void SuperSquareBoy::draw() {
         cinder::gl::clear(backgr_colors[current_level_]);
       }
 
-      cinder::gl::ScopedColor color(player_colors[0]);
+      cinder::gl::ScopedColor color(player_colors[current_level_]);
       cinder::gl::drawSolidRect(Rectf(_position_a, _position_b));
     }
     return;
@@ -230,7 +235,7 @@ void SuperSquareBoy::DrawPlayer() const {
   if (engine_.IsDead()) {
     cinder::gl::color(FadedColor(backgr_colors[current_level_]));
   } else {
-    cinder::gl::color(FadedColor(player_colors[0]));
+    cinder::gl::color(FadedColor(player_colors[current_level_]));
   }
 
   const Location loc = engine_.GetPlayerSquare().GetLocation();
@@ -279,7 +284,7 @@ void SuperSquareBoy::DrawEndScreen() const {
 void SuperSquareBoy::DrawPauseScreen() const {
   const cinder::vec2 center = getWindowCenter();
   const cinder::ivec2 size = {1000, 100};
-  const Color color = player_colors[0];
+  const Color color = player_colors[current_level_];
   const float main_y_offset = 150;
   const float small_y_offset = 75;
 
@@ -295,7 +300,7 @@ void SuperSquareBoy::DrawMainMenu() const {
 
   const cinder::vec2 center = getWindowCenter();
   const cinder::ivec2 size = {1000, 100};
-  const Color color = player_colors[0];
+  const Color color = player_colors[current_level_];
   const float main_y_offset = 150;
   const float small_y_offset = 75;
 
@@ -312,7 +317,7 @@ void SuperSquareBoy::DrawLevelSelect() const {
 
   const cinder::vec2 center = getWindowCenter();
   const cinder::ivec2 size = {1000, 100};
-  const Color color = player_colors[0];
+  const Color color = player_colors[current_level_];
   const float main_y_offset = 150;
   const float small_y_offset = 75;
   const float esc_y_offset = 50;
@@ -336,7 +341,7 @@ void SuperSquareBoy::DrawCreditsScreen() const {
 
   const cinder::vec2 center = getWindowCenter();
   const cinder::ivec2 size = {1000, 100};
-  const Color color = player_colors[0];
+  const Color color = player_colors[current_level_];
   const float main_y_offset = 150;
   const float small_y_offset = 50;
   const float left_x_offset = 500;
@@ -358,7 +363,7 @@ void SuperSquareBoy::DrawCreditsScreen() const {
   PrintText("LEVEL 2: DEEP BLUE - K-391", color, size,
             {center.x, center.y + (5 * small_y_offset)}, 40);
 
-  PrintText("LEVEL 3: [PLACEHOLDER] - [ARTIST]", color, size,
+  PrintText("LEVEL 3: LUMINOUS - LENSKO", color, size,
             {center.x, center.y + (6 * small_y_offset)}, 40);
 
   PrintText("LEVEL 4: [PLACEHOLDER] - [ARTIST]", color, size,
@@ -371,7 +376,7 @@ void SuperSquareBoy::DrawCreditsScreen() const {
 void SuperSquareBoy::DrawAttemptsCounter() const {
   const cinder::vec2 center = getWindowCenter();
   const cinder::ivec2 size = {1000, 100};
-  const Color color = FadedColor(player_colors[0]);
+  const Color color = FadedColor(player_colors[current_level_]);
   const float y_offset = 300;
 
   PrintText("ATTEMPT " + std::to_string(num_attempts), color, size,

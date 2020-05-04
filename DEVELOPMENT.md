@@ -57,8 +57,12 @@
     - Turn quadruple spike at end of level 1 into triple spike 
       to make slightly easier
 
-- **4/28/20**
+- **5/03/20**
     - Finish level 2
     - Change boolean based state system to an enum based one
     - Update readme file
+    - Start work on level 3
+
+- **5/04/20**
+    - Finish level 3
     
