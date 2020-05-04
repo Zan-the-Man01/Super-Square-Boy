@@ -113,8 +113,6 @@ class Frame {
    */
   std::vector<Location> GetCharsNearPlayerX(char ch);
 
- private:
-
   /** The level in grid form. */
   std::vector<std::string> level_grid_;
 

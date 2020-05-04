@@ -94,7 +94,7 @@ class SuperSquareBoy : public cinder::app::App {
   /**
    * Draws the pause screen.
    */
-  void DrawPauseScreen() const;
+  void DrawPauseScreen();
 
   /**
    * Draws the main menu.

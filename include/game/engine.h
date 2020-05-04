@@ -24,7 +24,7 @@ class Engine {
   Engine();
 
   /**
-   * Loads and starts the specified level.
+   * Loads and starts the specified level, starting from 1.
    *
    * @param level_number the number of the level to load.
    */

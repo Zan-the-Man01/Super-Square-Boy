@@ -177,25 +177,7 @@ void SuperSquareBoy::draw() {
   }
 
   if (state_ == GameState::Paused) {
-    if (!animation_started_) {
-      animation_started_ = true;
-      anim_time_ = 0;
-      SetUpAnimation();
-    }
-
-    if (TimeToPrintPauseScreen()) {
-      cinder::gl::clear(backgr_colors[current_level_]);
-      DrawPauseScreen();
-    }
-
-    if (!AnimationEnded()) {
-      if (!TimeToPrintPauseScreen()) {
-        cinder::gl::clear(backgr_colors[current_level_]);
-      }
-
-      cinder::gl::ScopedColor color(player_colors[current_level_]);
-      cinder::gl::drawSolidRect(Rectf(_position_a, _position_b));
-    }
+    DrawPauseScreen();
     return;
   }
   if (FadeEnded()) {
@@ -281,18 +263,37 @@ void SuperSquareBoy::DrawEndScreen() const {
   PrintText("LEVEL COMPLETE", color, size, center, 100);
 }
 
-void SuperSquareBoy::DrawPauseScreen() const {
-  const cinder::vec2 center = getWindowCenter();
-  const cinder::ivec2 size = {1000, 100};
-  const Color color = player_colors[current_level_];
-  const float main_y_offset = 150;
-  const float small_y_offset = 75;
+void SuperSquareBoy::DrawPauseScreen() {
+  if (!animation_started_) {
+    animation_started_ = true;
+    anim_time_ = 0;
+    SetUpAnimation();
+  }
+
+  if (TimeToPrintPauseScreen()) {
+    cinder::gl::clear(backgr_colors[current_level_]);
+
+    const cinder::vec2 center = getWindowCenter();
+    const cinder::ivec2 size = {1000, 100};
+    const Color color = player_colors[current_level_];
+    const float main_y_offset = 150;
+    const float small_y_offset = 75;
 
 
-  PrintText("PAUSED", color, size, {center.x, center.y - main_y_offset}, 100);
-  PrintText("1: RESUME GAME", color, size, center, 50);
-  PrintText("2: MAIN MENU", color, size,
-      {center.x, center.y + small_y_offset}, 50);
+    PrintText("PAUSED", color, size, {center.x, center.y - main_y_offset}, 100);
+    PrintText("1: RESUME GAME", color, size, center, 50);
+    PrintText("2: MAIN MENU", color, size,
+              {center.x, center.y + small_y_offset}, 50);
+  }
+
+  if (!AnimationEnded()) {
+    if (!TimeToPrintPauseScreen()) {
+      cinder::gl::clear(backgr_colors[current_level_]);
+    }
+
+    cinder::gl::ScopedColor color(player_colors[current_level_]);
+    cinder::gl::drawSolidRect(Rectf(_position_a, _position_b));
+  }
 }
 
 void SuperSquareBoy::DrawMainMenu() const {
